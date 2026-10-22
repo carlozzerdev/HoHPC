@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "roomsRendered": 301,
+  "spritesDecoded": 100,
+  "spatialCameraValidated": true,
+  "nativeJumpAndLanding": true,
+  "independentCharacters": true,
+  "z80RuleChecks": 69,
+  "pushChecks": 121,
+  "mechanicsChecks": 178,
+  "pickupChecks": 17,
+  "pickupsRecovered": 52,
+  "nativeRuntime": true,
+  "doorLinksValidated": 482,
+  "teleportPairsRecovered": 22,
+  "fidelityValidated": false,
+  "completeGame": false
+}

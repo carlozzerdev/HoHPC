@@ -1,4 +1,4 @@
-namespace HoH26;
+﻿namespace HoH26;
 
 // Golden values below come from Z80 tables documented in CHARACTERS-Z80.md,
 // rather than duplicating implementation formulas in expected results.
@@ -14,6 +14,10 @@ static class RulesVerification
     public static int Run()
     {
         checks=0;
+        Check(GameWindow.RoomOffset(1,0)==new System.Drawing.PointF(160,-80),"Camera: physical X projects up-right");
+        Check(GameWindow.RoomOffset(0,1)==new System.Drawing.PointF(-160,-80),"Camera: physical Y projects up-left");
+        Check(GameWindow.RoomOffset(-1,0)==new System.Drawing.PointF(-160,80),"Camera: negative X projects down-left");
+        Check(GameWindow.RoomOffset(0,-1)==new System.Drawing.PointF(160,80),"Camera: negative Y projects down-right");
         foreach(var input in new[]{(h:0f,v:-1f,sx:2f,sy:-1f),(h:0f,v:1f,sx:-2f,sy:1f),
                                    (h:-1f,v:0f,sx:-2f,sy:-1f),(h:1f,v:0f,sx:2f,sy:1f)}) {
             var walking=new NativeGame(EmptyWorld());var motion=GameWindow.WorldMotion(input.h,input.v);
@@ -49,6 +53,11 @@ static class RulesVerification
         Check(cues.Count(c=>c==SoundCue.Land)==1,"Standing emits no repeated landing");
         audible.Fire();Check(!cues.Contains(SoundCue.Fire),"Denied shot emits no firing sound");
         Ticks(audible,4,1,0);Check(cues.Contains(SoundCue.Step),"Successful ground movement emits footsteps");
+        int stepSounds=cues.Count(c=>c==SoundCue.Step);
+        Ticks(audible,2,1,0);Check(cues.Count(c=>c==SoundCue.Step)==stepSounds+2,"Ground steps emit every logic tick");
+        Ticks(audible,1);Check(cues.Last()==SoundCue.StopStep,"Releasing movement stops footstep effect");
+        int stoppedSounds=cues.Count(c=>c==SoundCue.StopStep);
+        Ticks(audible,2);Check(cues.Count(c=>c==SoundCue.StopStep)==stoppedSounds,"Idle does not repeatedly stop other effects");
         audible.Switch();Check(cues.Contains(SoundCue.Switch),"Character switch emits sound");
         var head=new NativeGame(EmptyWorld());Ticks(head,10,1,0);
         Near(head.Player.X,4.75f,"Head: ten original steps");

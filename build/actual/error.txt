@@ -1,0 +1,5 @@
+System.Exception: Mechanics: alternate lift has limits two to five
+   at HoH26.MechanicsVerification.<Run>g__Check|0_0(Boolean ok, String message, <>c__DisplayClass0_0&) in C:\ia\HoHPC\src\MechanicsVerification.cs:line 8
+   at HoH26.MechanicsVerification.Run(WorldData data) in C:\ia\HoHPC\src\MechanicsVerification.cs:line 56
+   at HoH26.Program.Verify(WorldData data) in C:\ia\HoHPC\src\Program.cs:line 38
+   at HoH26.Program.Main(String[] args) in C:\ia\HoHPC\src\Program.cs:line 24

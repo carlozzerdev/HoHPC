@@ -1,4 +1,4 @@
-using System.Drawing.Drawing2D;
+﻿using System.Drawing.Drawing2D;
 
 namespace HoH26;
 
@@ -34,10 +34,11 @@ public sealed class Renderer : IDisposable
     }
     // 1E77: C=X-Y+128, B=2Z-X-Y+127; native horizontal aspect 2:1.
     static PointF Project(float x,float y,float z) => new(160+(x-y)*16,190-(x+y)*8-z*12);
-    public Bitmap Room(RoomState room,IEnumerable<Character>? people=null)
+    public Bitmap Room(RoomState room,IEnumerable<Character>? people=null,bool transparent=false,bool tall=false)
     {
-        var b=new Bitmap(320,220);
-        using var g=Graphics.FromImage(b);g.Clear(Color.Black);
+        var b=new Bitmap(320,tall?284:220);
+        using var g=Graphics.FromImage(b);g.Clear(transparent?Color.Transparent:Color.Black);
+        if(tall)g.TranslateTransform(0,64);
         g.InterpolationMode=InterpolationMode.NearestNeighbor;g.PixelOffsetMode=PixelOffsetMode.Half;
         var r=room.Data;var tint=Tints[r.Theme%8];
         int xmin=(r.Bounds[0]-8)/8,xmax=(r.Bounds[2]-8)/8;
@@ -46,6 +47,7 @@ public sealed class Renderer : IDisposable
         using var tile=new SolidBrush(Color.Black);
         for(int x=xmin;x<xmax;x++)for(int y=ymin;y<ymax;y++)
         {
+            if(!NativeGame.HasFloor(r))continue;
             PointF[] p=[Project(x-.5f,y-.5f,0),Project(x+.5f,y-.5f,0),Project(x+.5f,y+.5f,0),Project(x-.5f,y+.5f,0)];
             g.FillPolygon(tile,p);g.DrawPolygon(edge,p);
         }

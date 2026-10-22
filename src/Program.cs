@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Text.Json;
 
@@ -12,12 +12,27 @@ static class Program
         ApplicationConfiguration.Initialize();
         try
         {
+            if(args.Contains("--verify-audio-timing"))
+            {
+                using var audio=new GameAudio { Muted=true };
+                Thread.Sleep(400);
+                long initial=audio.PlayedSamples;var stopwatch=Stopwatch.StartNew();
+                Thread.Sleep(3000);
+                double elapsed=stopwatch.Elapsed.TotalSeconds;
+                long samples=audio.PlayedSamples-initial;
+                bool passed=audio.Error is null&&Math.Abs(samples/elapsed-22050)/22050<.05;
+                var report=JsonSerializer.Serialize(new {passed,samples,elapsedSeconds=elapsed,samplesPerSecond=samples/elapsed,expectedRate=22050,error=audio.Error},new JsonSerializerOptions{WriteIndented=true});
+                File.WriteAllText(Path.Combine(AppContext.BaseDirectory,"audio-timing.json"),report);
+                if(audio.Error is not null)throw new Exception(audio.Error);
+                if(!passed)throw new Exception("Audio output speed differs from the expected sample rate by more than 5%");
+                return;
+            }
             if(args.Contains("--verify-audio")) {
                 using var audio=new GameAudio();
                 Thread.Sleep(150);
-                foreach(var cue in Enum.GetValues<SoundCue>()) { audio.Play(cue);Thread.Sleep(750); }
+                foreach(var cue in Enum.GetValues<SoundCue>().Where(c=>GameAudio.Command(c)>=0)) { audio.Play(cue);Thread.Sleep(750); }
                 if(audio.Error is not null)throw new Exception(audio.Error);
-                File.WriteAllText(Path.Combine(AppContext.BaseDirectory,"audio-verification.txt"),"Windows waveOut: opened and played all nine synthesized effects successfully.");
+                File.WriteAllText(Path.Combine(AppContext.BaseDirectory,"audio-verification.txt"),"Windows waveOut: opened and submitted the eleven mapped CPC effects. Auditory equivalence not validated.");
                 return;
             }
             var data=WorldData.Load();
@@ -34,6 +49,9 @@ static class Program
     static void Verify(WorldData data)
     {
         int rules=RulesVerification.Run();
+        int pushes=PushVerification.Run(data);
+        int mechanics=MechanicsVerification.Run(data);
+        int pickups=PickupVerification.Run(data);
         int doorLinks=VerifyTopology(data);
         var game=new NativeGame(data);
         if(game.Rooms.Count!=301||data.Sprites.Count!=100)throw new Exception("Unexpected asset inventory");
@@ -51,17 +69,42 @@ static class Program
         using(var room=renderer.Room(game.Rooms[0x8a40],stairsPeople))room.Save(Path.Combine(dir,"depth-stairs.png"));
         var rider=new Character(0x8a40,false){X=7,Y=6,Height=1};
         using(var room=renderer.Room(game.Rooms[0x8a40],[rider]))room.Save(Path.Combine(dir,"depth-teleporter.png"));
+        // Actual spring room from the supplied disk (the user's reported scene).
+        var pushing=new NativeGame(data);pushing.Player.Room=0x0480;
+        pushing.Player.X=3.25f;pushing.Player.Y=4;
+        using(var room=renderer.Room(pushing.Rooms[0x0480],[pushing.Player]))room.Save(Path.Combine(dir,"push-spring-before.png"));
+        for(int i=0;i<8;i++)pushing.Step(NativeGame.TickSeconds,1,0);
+        var spring=pushing.Rooms[0x0480].Entities.Single(e=>e.Source.Type==1);
+        if(Math.Abs(spring.X-5)>.001f||spring.Source.X!=4)throw new Exception("Recovered spring room push failed");
+        using(var room=renderer.Room(pushing.Rooms[0x0480],[pushing.Player]))room.Save(Path.Combine(dir,"push-spring-after.png"));
+        var collecting=new NativeGame(data);collecting.Player.Room=0x3060;
+        collecting.Player.X=2;collecting.Player.Y=0;
+        for(int i=0;i<42;i++)collecting.Step(NativeGame.TickSeconds,0,0);
+        collecting.Player.X=3;collecting.Player.Height=3;
+        using(var room=renderer.Room(collecting.Rooms[0x3060],[collecting.Player],tall:true))room.Save(Path.Combine(dir,"hooter-before.png"));
+        collecting.Player.X=4;collecting.Step(NativeGame.TickSeconds,0,0);
+        using(var room=renderer.Room(collecting.Rooms[0x3060],[collecting.Player],tall:true))room.Save(Path.Combine(dir,"hooter-collected.png"));
+        var riding=new NativeGame(data);riding.Switch();riding.Player.Room=0x6160;
+        riding.Player.X=6;riding.Player.Y=3;riding.Player.Height=1;
+        var lift=riding.Rooms[0x6160].Entities.Single(e=>e.Source.Behavior==23);
+        for(int i=0;i<100&&lift.Height<9-.001f;i++)riding.Step(NativeGame.TickSeconds,0,0);
+        using(var room=renderer.Room(riding.Rooms[0x6160],[riding.Player],tall:true))room.Save(Path.Combine(dir,"lift-6160-top.png"));
+        riding.Jump();riding.Step(NativeGame.TickSeconds,0,0);
+        using(var room=renderer.Room(riding.Rooms[0x6150],[riding.Player],tall:true))room.Save(Path.Combine(dir,"lift-6150-arrival.png"));
         // Exercise every decoded room and sprite, not only the starting scene.
         foreach(var r in game.Rooms.Values){using var image=renderer.Room(r);}
         using var window=new GameWindow(data);window.ClientSize=new Size(1200,800);window.CreateControl();
         using var screenshot=new Bitmap(1200,800);window.DrawToBitmap(screenshot,new Rectangle(0,0,1200,800));
         screenshot.Save(Path.Combine(dir,"window.png"));
+        window.VerifyCamera();
+        window.DrawToBitmap(screenshot,new Rectangle(0,0,1200,800));
+        screenshot.Save(Path.Combine(dir,"camera-transition.png"));
         window.ShowOverview();
         window.DrawToBitmap(screenshot,new Rectangle(0,0,1200,800));
         screenshot.Save(Path.Combine(dir,"multi-room.png"));
         File.WriteAllText(Path.Combine(dir,"results.json"),JsonSerializer.Serialize(new{
             passed=true,roomsRendered=game.Rooms.Count,spritesDecoded=data.Sprites.Count,
-            nativeJumpAndLanding=true,independentCharacters=true,z80RuleChecks=rules,
+            spatialCameraValidated=true,nativeJumpAndLanding=true,independentCharacters=true,z80RuleChecks=rules,pushChecks=pushes,mechanicsChecks=mechanics,pickupChecks=pickups,
             pickupsRecovered=data.Pickups.Count,nativeRuntime=true,
             doorLinksValidated=doorLinks,teleportPairsRecovered=data.TeleportPairs.Length,
             fidelityValidated=false,completeGame=false},new JsonSerializerOptions{WriteIndented=true}));
@@ -95,6 +138,27 @@ sealed class GameWindow : Form
     readonly Stopwatch clock=Stopwatch.StartNew();double last;
     bool overview,paused;
     int selectedRoom;
+    readonly Dictionary<int,PointF> roomPositions=[];
+    PointF camera;
+    int cameraRoom;
+    // GridY is physical X; GridX is physical Y, matching the original exits.
+    internal static PointF RoomOffset(int dx,int dy,int dz=0)=>new((dx-dy)*160,-(dx+dy)*80+dz*320);
+    static int GridDelta(int to,int from)=>(to-from+24)%16-8;
+    void UpdateCamera(float dt,bool snap=false)
+    {
+        var next=game.Rooms[game.Player.Room].Data;
+        if(roomPositions.Count==0){roomPositions[next.Id]=PointF.Empty;cameraRoom=next.Id;}
+        if(!roomPositions.ContainsKey(next.Id)) {
+            var previous=game.Rooms[cameraRoom].Data;
+            var delta=RoomOffset(GridDelta(next.GridY,previous.GridY),GridDelta(next.GridX,previous.GridX),next.Level-previous.Level);
+            var origin=roomPositions[cameraRoom];
+            roomPositions[next.Id]=new(origin.X+delta.X,origin.Y+delta.Y);
+        }
+        cameraRoom=next.Id;
+        var target=roomPositions[next.Id];
+        float blend=snap?1:1-MathF.Exp(-dt*7);
+        camera=new(camera.X+(target.X-camera.X)*blend,camera.Y+(target.Y-camera.Y)*blend);
+    }
     readonly Font title=new("Segoe UI",20,FontStyle.Bold);
     readonly Font small=new("Segoe UI",10);
     readonly Font mono=new("Consolas",10);
@@ -114,7 +178,9 @@ sealed class GameWindow : Form
                 var motion=WorldMotion(horizontal,vertical);
                 game.Step(dt,motion.dx,motion.dy);selectedRoom=game.Player.Room;
             }
+            UpdateCamera(dt);
             Invalidate();};
+        UpdateCamera(0,true);
         timer.Start();
         KeyDown+=(_,e)=>{
             bool first=keys.Add(e.KeyCode);e.Handled=true;
@@ -123,14 +189,14 @@ sealed class GameWindow : Form
             if(e.KeyCode==Keys.Tab){game.Switch();selectedRoom=game.Player.Room;}
             if(e.KeyCode==Keys.E)game.Carry();
             if(e.KeyCode==Keys.F||e.KeyCode==Keys.ControlKey)game.Fire();
-            if(e.KeyCode==Keys.R){game.Sound-=audio.Play;game=new(data);game.Sound+=audio.Play;selectedRoom=game.Player.Room;paused=false;overview=false;}
+            if(e.KeyCode==Keys.R){audio.Play(SoundCue.StopStep);game.Sound-=audio.Play;game=new(data);game.Sound+=audio.Play;selectedRoom=game.Player.Room;paused=false;overview=false;roomPositions.Clear();UpdateCamera(0,true);}
             if(e.KeyCode==Keys.M)audio.Muted=!audio.Muted;
-            if(e.KeyCode==Keys.F2)overview=!overview;
-            if(e.KeyCode==Keys.Escape)paused=!paused;
+            if(e.KeyCode==Keys.F2){overview=!overview;if(overview)audio.Play(SoundCue.StopStep);}
+            if(e.KeyCode==Keys.Escape){paused=!paused;if(paused)audio.Play(SoundCue.StopStep);}
             if(e.KeyCode==Keys.F11){FormBorderStyle=FormBorderStyle==FormBorderStyle.None?FormBorderStyle.Sizable:FormBorderStyle.None;WindowState=WindowState==FormWindowState.Maximized?FormWindowState.Normal:FormWindowState.Maximized;}
             if(e.KeyCode==Keys.PageDown||e.KeyCode==Keys.PageUp){
                 var ids=data.Rooms.Select(r=>r.Id).Order().ToArray();int i=Array.IndexOf(ids,selectedRoom);
-                selectedRoom=ids[(i+(e.KeyCode==Keys.PageDown?1:ids.Length-1))%ids.Length];overview=true;}
+                selectedRoom=ids[(i+(e.KeyCode==Keys.PageDown?1:ids.Length-1))%ids.Length];overview=true;audio.Play(SoundCue.StopStep);}
         };
         KeyUp+=(_,e)=>keys.Remove(e.KeyCode);Deactivate+=(_,_)=>keys.Clear();
     }
@@ -138,6 +204,27 @@ sealed class GameWindow : Form
     internal static (float dx,float dy) WorldMotion(float horizontal,float vertical)=>(-vertical,-horizontal);
     protected override bool IsInputKey(Keys keyData)=>true;
     internal void ShowOverview() => overview=true;
+    internal void VerifyCamera()
+    {
+        int start=game.Player.Room;
+        var origin=game.Rooms[start].Data;
+        var adjacent=game.Rooms.Values.Select(r=>r.Data).First(r=>r.Level==origin.Level&&r.GridY==origin.GridY&&r.GridX==origin.GridX-1);
+        game.Player.Room=adjacent.Id;selectedRoom=adjacent.Id;UpdateCamera(.08f);
+        var before=roomPositions[start];var after=roomPositions[adjacent.Id];
+        if(before!=PointF.Empty||after!=new PointF(160,80)||camera.X<=0||camera.X>=after.X)
+            throw new Exception("Adjacent room placement or camera easing failed");
+        game.Player.Room=start;UpdateCamera(.08f);
+        if(roomPositions[start]!=before||roomPositions[adjacent.Id]!=after)
+            throw new Exception("Room position changed on return");
+        var destination=data.TeleportPairs.First(p=>p[0]==start||p[1]==start);
+        game.Player.Room=destination[0]==start?destination[1]:destination[0];
+        UpdateCamera(.08f);
+        var target=roomPositions[game.Player.Room];
+        UpdateCamera(2);
+        if(Math.Abs(camera.X-target.X)>.1f||Math.Abs(camera.Y-target.Y)>.1f)
+            throw new Exception("Teleport camera did not reach destination");
+        game.Player.Room=adjacent.Id;selectedRoom=adjacent.Id;UpdateCamera(0,true);
+    }
     protected override void OnPaint(PaintEventArgs e)
     {
         var g=e.Graphics;g.Clear(BackColor);
@@ -145,16 +232,13 @@ sealed class GameWindow : Form
         using var muted=new SolidBrush(Color.FromArgb(144,159,179));
         using var bright=new SolidBrush(Color.FromArgb(239,231,207));
         using var accent=new SolidBrush(Color.FromArgb(240,195,105));
-        g.DrawString("HEAD OVER HEELS",title,bright,32,22);
-        g.DrawString("PC NATIVO  /  RECONSTRUCCIÓN DEL CPC",mono,muted,34,61);
-        g.DrawString(audio.Error is not null?"AUDIO NO DISPONIBLE":audio.Muted?"SONIDO: OFF (M)":"SONIDO: ON (M)",mono,muted,34,82);
-        g.DrawString("PROTOTIPO",mono,accent,ClientSize.Width-142,39);
-        using var line=new Pen(Color.FromArgb(40,49,64));g.DrawLine(line,32,96,ClientSize.Width-32,96);
-        var viewport=new Rectangle(32,116,ClientSize.Width-340,ClientSize.Height-230);
+        g.DrawString("HEAD OVER HEELS",label,bright,12,8);
+        g.DrawString(audio.Error is not null?"AUDIO NO DISPONIBLE":audio.Muted?"SONIDO: OFF (M)":"SONIDO: ON (M)",mono,muted,230,10);
+        var viewport=new Rectangle(8,36,ClientSize.Width-280,ClientSize.Height-100);
         using var panel=new SolidBrush(Color.FromArgb(10,13,18));g.FillRectangle(panel,viewport);
-        if(overview)DrawOverview(g,viewport);else DrawRoom(g,viewport,game.Player.Room,true);
-        int sx=ClientSize.Width-282;
-        g.DrawString(game.Player.IsHead?"HEAD":"HEELS",label,accent,sx,118);
+        if(overview)DrawOverview(g,viewport);else DrawWorld(g,viewport);
+        int sx=ClientSize.Width-258;
+        g.DrawString(game.Player.IsHead?"HEAD":"HEELS",label,accent,sx,44);
         g.DrawString("Habitación "+selectedRoom.ToString("X4"),mono,bright,sx,151);
         var room=game.Rooms[selectedRoom].Data;
         g.DrawString($"Planta {room.Level} · Sector {room.GridX},{room.GridY}",small,muted,sx,176);
@@ -168,10 +252,26 @@ sealed class GameWindow : Form
         g.DrawString("DATOS RECUPERADOS",mono,muted,sx,501);
         g.DrawString("301 habitaciones · 100 sprites",small,bright,sx,529);
         g.DrawString("Vista F2: habitaciones simultáneas",small,muted,sx,555);
-        g.DrawString("WASD / Flechas  Mover    Espacio  Saltar    Tab  Cambiar / unir    E  Bolsa    F  Disparar",small,bright,34,ClientSize.Height-88);
-        g.DrawString("F2  Explorar mapa     RePág / AvPág  Habitación     Esc  Pausa     F11  Pantalla completa",small,muted,34,ClientSize.Height-61);
-        g.DrawString(game.Notice.Length>0?game.Notice:"Reconstrucción en curso · reglas Z80 portadas parcialmente · sonido y fidelidad pendientes",small,muted,34,ClientSize.Height-34);
+        g.DrawString("WASD / Flechas  Mover    Espacio  Saltar    Tab  Cambiar / unir    E  Bolsa    F  Disparar",small,bright,34,ClientSize.Height-59);
+        g.DrawString("F2  Explorar mapa     RePág / AvPág  Habitación     Esc  Pausa     F11  Pantalla completa",small,muted,34,ClientSize.Height-40);
+        g.DrawString(game.Notice.Length>0?game.Notice:"Reconstrucción en curso · reglas Z80 portadas parcialmente · sonido y fidelidad pendientes",small,muted,34,ClientSize.Height-21);
         if(paused){using var shade=new SolidBrush(Color.FromArgb(180,BackColor));g.FillRectangle(shade,viewport);g.DrawString("PAUSA",title,bright,viewport.X+40,viewport.Y+40);}
+    }
+    void DrawWorld(Graphics g,Rectangle bounds)
+    {
+        var state=g.Save();g.SetClip(bounds);
+        float scale=Math.Min(bounds.Width/440f,bounds.Height/285f);
+        g.InterpolationMode=InterpolationMode.NearestNeighbor;g.PixelOffsetMode=PixelOffsetMode.Half;
+        foreach(var entry in roomPositions.OrderBy(p=>p.Value.Y))
+        {
+            float x=bounds.X+bounds.Width/2f+(entry.Value.X-camera.X-160)*scale;
+            float y=bounds.Y+bounds.Height/2f+(entry.Value.Y-camera.Y-174)*scale;
+            var dest=new RectangleF(x,y,320*scale,284*scale);
+            if(!dest.IntersectsWith(bounds))continue;
+            using var image=renderer.Room(game.Rooms[entry.Key],game.Characters.Where(p=>p.Room==entry.Key),true,true);
+            g.DrawImage(image,dest);
+        }
+        g.Restore(state);
     }
     void DrawRoom(Graphics g,Rectangle bounds,int id,bool people)
     {

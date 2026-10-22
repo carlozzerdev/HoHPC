@@ -1,0 +1,21 @@
+{
+  "measurement": "waveOutGetPosition TIME_SAMPLES versus wall-clock, silent PCM",
+  "beforeSingleBuffer": {
+    "samples": 33280,
+    "elapsedSeconds": 3.0018262,
+    "samplesPerSecond": 11086.584559758989,
+    "expectedRate": 22050,
+    "error": null
+  },
+  "afterQueuedBuffers": {
+    "passed": true,
+    "samples": 66590,
+    "elapsedSeconds": 3.0133332,
+    "samplesPerSecond": 22098.45230524125,
+    "expectedRate": 22050,
+    "error": null
+  },
+  "sequencerHz": 50,
+  "bufferSamples": 441,
+  "queuedBuffers": 3
+}

@@ -1,0 +1,1502 @@
+{
+  "diskSha256": "ebea9f40e43763f1d44d16766635a55505682e535b2712e1d60451f0a657b3fd",
+  "memorySha256": "04a7f6b6469b426a2f078e96c1016e7dd5a81c71fa2a563913e5fb666138d3cf",
+  "evidenceKind": "static Z80 bytes and recovered descriptors; no runtime observation",
+  "instructionsChecked": 271,
+  "passivePushTypes": [
+    {
+      "type": 1,
+      "descriptor": [
+        43,
+        28,
+        64
+      ],
+      "behavior": 28,
+      "behaviorAddress": "4D98",
+      "instances": 22,
+      "carryable": true
+    },
+    {
+      "type": 3,
+      "descriptor": [
+        74,
+        1,
+        64
+      ],
+      "behavior": 1,
+      "behaviorAddress": "4DDC",
+      "instances": 16,
+      "carryable": true
+    },
+    {
+      "type": 10,
+      "descriptor": [
+        70,
+        1,
+        64
+      ],
+      "behavior": 1,
+      "behaviorAddress": "4DDC",
+      "instances": 22,
+      "carryable": true
+    },
+    {
+      "type": 11,
+      "descriptor": [
+        75,
+        1,
+        64
+      ],
+      "behavior": 1,
+      "behaviorAddress": "4DDC",
+      "instances": 34,
+      "carryable": true
+    },
+    {
+      "type": 13,
+      "descriptor": [
+        76,
+        10,
+        0
+      ],
+      "behavior": 10,
+      "behaviorAddress": "4C86",
+      "instances": 19,
+      "carryable": false
+    },
+    {
+      "type": 21,
+      "descriptor": [
+        90,
+        1,
+        1
+      ],
+      "behavior": 1,
+      "behaviorAddress": "4DDC",
+      "instances": 14,
+      "carryable": false
+    },
+    {
+      "type": 29,
+      "descriptor": [
+        71,
+        10,
+        32
+      ],
+      "behavior": 10,
+      "behaviorAddress": "4C86",
+      "instances": 13,
+      "carryable": false
+    },
+    {
+      "type": 40,
+      "descriptor": [
+        85,
+        1,
+        1
+      ],
+      "behavior": 1,
+      "behaviorAddress": "4DDC",
+      "instances": 5,
+      "carryable": false
+    },
+    {
+      "type": 48,
+      "descriptor": [
+        71,
+        10,
+        0
+      ],
+      "behavior": 10,
+      "behaviorAddress": "4C86",
+      "instances": 20,
+      "carryable": false
+    },
+    {
+      "type": 51,
+      "descriptor": [
+        93,
+        10,
+        1
+      ],
+      "behavior": 10,
+      "behaviorAddress": "4C86",
+      "instances": 4,
+      "carryable": false
+    },
+    {
+      "type": 52,
+      "descriptor": [
+        93,
+        1,
+        1
+      ],
+      "behavior": 1,
+      "behaviorAddress": "4DDC",
+      "instances": 3,
+      "carryable": false
+    }
+  ],
+  "matchedInstructions": [
+    {
+      "address": "2998",
+      "hex": "f5",
+      "assembly": "PUSH AF"
+    },
+    {
+      "address": "2999",
+      "hex": "fda60c",
+      "assembly": "AND (IY+12)"
+    },
+    {
+      "address": "299C",
+      "hex": "cd0f44",
+      "assembly": "CALL &440F"
+    },
+    {
+      "address": "299F",
+      "hex": "feff",
+      "assembly": "CP &FF"
+    },
+    {
+      "address": "29A1",
+      "hex": "2813",
+      "assembly": "JR Z,&29B6"
+    },
+    {
+      "address": "29A3",
+      "hex": "cd3b2b",
+      "assembly": "CALL &2B3B"
+    },
+    {
+      "address": "29A6",
+      "hex": "cd5c46",
+      "assembly": "CALL &465C"
+    },
+    {
+      "address": "29A9",
+      "hex": "3015",
+      "assembly": "JR NC,&29C0"
+    },
+    {
+      "address": "29AB",
+      "hex": "fd7e0b",
+      "assembly": "LD A,(IY+11)"
+    },
+    {
+      "address": "29AE",
+      "hex": "f6f0",
+      "assembly": "OR &F0"
+    },
+    {
+      "address": "29B0",
+      "hex": "3c",
+      "assembly": "INC A"
+    },
+    {
+      "address": "29B1",
+      "hex": "3e88",
+      "assembly": "LD A,&88"
+    },
+    {
+      "address": "29B3",
+      "hex": "c4212b",
+      "assembly": "CALL NZ,&2B21"
+    },
+    {
+      "address": "29B6",
+      "hex": "f1",
+      "assembly": "POP AF"
+    },
+    {
+      "address": "29B7",
+      "hex": "fd7e0b",
+      "assembly": "LD A,(IY+11)"
+    },
+    {
+      "address": "29BA",
+      "hex": "f60f",
+      "assembly": "OR &0F"
+    },
+    {
+      "address": "29BC",
+      "hex": "fd770b",
+      "assembly": "LD (IY+11),A"
+    },
+    {
+      "address": "29BF",
+      "hex": "c9",
+      "assembly": "RET"
+    },
+    {
+      "address": "29C0",
+      "hex": "cd3b2b",
+      "assembly": "CALL &2B3B"
+    },
+    {
+      "address": "29C3",
+      "hex": "cd5544",
+      "assembly": "CALL &4455"
+    },
+    {
+      "address": "29C6",
+      "hex": "c1",
+      "assembly": "POP BC"
+    },
+    {
+      "address": "440F",
+      "hex": "e60f",
+      "assembly": "AND &0F"
+    },
+    {
+      "address": "4411",
+      "hex": "c61a",
+      "assembly": "ADD A,&1A"
+    },
+    {
+      "address": "4413",
+      "hex": "6f",
+      "assembly": "LD L,A"
+    },
+    {
+      "address": "4414",
+      "hex": "ce44",
+      "assembly": "ADC A,&44"
+    },
+    {
+      "address": "4416",
+      "hex": "95",
+      "assembly": "SUB L"
+    },
+    {
+      "address": "4417",
+      "hex": "67",
+      "assembly": "LD H,A"
+    },
+    {
+      "address": "4418",
+      "hex": "7e",
+      "assembly": "LD A,(HL)"
+    },
+    {
+      "address": "4419",
+      "hex": "c9",
+      "assembly": "RET"
+    },
+    {
+      "address": "441A",
+      "hex": "ff",
+      "assembly": "RST &38"
+    },
+    {
+      "address": "441B",
+      "hex": "00",
+      "assembly": "NOP"
+    },
+    {
+      "address": "441C",
+      "hex": "04",
+      "assembly": "INC B"
+    },
+    {
+      "address": "441D",
+      "hex": "ff",
+      "assembly": "RST &38"
+    },
+    {
+      "address": "441E",
+      "hex": "0607",
+      "assembly": "LD B,&07"
+    },
+    {
+      "address": "4420",
+      "hex": "05",
+      "assembly": "DEC B"
+    },
+    {
+      "address": "4421",
+      "hex": "0602",
+      "assembly": "LD B,&02"
+    },
+    {
+      "address": "4423",
+      "hex": "010302",
+      "assembly": "LD BC,&0203"
+    },
+    {
+      "address": "4426",
+      "hex": "ff",
+      "assembly": "RST &38"
+    },
+    {
+      "address": "4427",
+      "hex": "00",
+      "assembly": "NOP"
+    },
+    {
+      "address": "4428",
+      "hex": "04",
+      "assembly": "INC B"
+    },
+    {
+      "address": "4429",
+      "hex": "ff",
+      "assembly": "RST &38"
+    },
+    {
+      "address": "442A",
+      "hex": "6f",
+      "assembly": "LD L,A"
+    },
+    {
+      "address": "442B",
+      "hex": "87",
+      "assembly": "ADD A,A"
+    },
+    {
+      "address": "442C",
+      "hex": "85",
+      "assembly": "ADD A,L"
+    },
+    {
+      "address": "442D",
+      "hex": "c63a",
+      "assembly": "ADD A,&3A"
+    },
+    {
+      "address": "442F",
+      "hex": "6f",
+      "assembly": "LD L,A"
+    },
+    {
+      "address": "4430",
+      "hex": "ce44",
+      "assembly": "ADC A,&44"
+    },
+    {
+      "address": "4432",
+      "hex": "95",
+      "assembly": "SUB L"
+    },
+    {
+      "address": "4433",
+      "hex": "67",
+      "assembly": "LD H,A"
+    },
+    {
+      "address": "4434",
+      "hex": "4e",
+      "assembly": "LD C,(HL)"
+    },
+    {
+      "address": "4435",
+      "hex": "23",
+      "assembly": "INC HL"
+    },
+    {
+      "address": "4436",
+      "hex": "46",
+      "assembly": "LD B,(HL)"
+    },
+    {
+      "address": "4437",
+      "hex": "23",
+      "assembly": "INC HL"
+    },
+    {
+      "address": "4438",
+      "hex": "7e",
+      "assembly": "LD A,(HL)"
+    },
+    {
+      "address": "4439",
+      "hex": "c9",
+      "assembly": "RET"
+    },
+    {
+      "address": "443A",
+      "hex": "ff",
+      "assembly": "RST &38"
+    },
+    {
+      "address": "443B",
+      "hex": "00",
+      "assembly": "NOP"
+    },
+    {
+      "address": "443C",
+      "hex": "0d",
+      "assembly": "DEC C"
+    },
+    {
+      "address": "443D",
+      "hex": "ff",
+      "assembly": "RST &38"
+    },
+    {
+      "address": "443E",
+      "hex": "ff",
+      "assembly": "RST &38"
+    },
+    {
+      "address": "443F",
+      "hex": "09",
+      "assembly": "ADD HL,BC"
+    },
+    {
+      "address": "4440",
+      "hex": "00",
+      "assembly": "NOP"
+    },
+    {
+      "address": "4441",
+      "hex": "ff",
+      "assembly": "RST &38"
+    },
+    {
+      "address": "4442",
+      "hex": "0b",
+      "assembly": "DEC BC"
+    },
+    {
+      "address": "4443",
+      "hex": "01ff0a",
+      "assembly": "LD BC,&0AFF"
+    },
+    {
+      "address": "4446",
+      "hex": "01000e",
+      "assembly": "LD BC,&0E00"
+    },
+    {
+      "address": "4449",
+      "hex": "010106",
+      "assembly": "LD BC,&0601"
+    },
+    {
+      "address": "444C",
+      "hex": "00",
+      "assembly": "NOP"
+    },
+    {
+      "address": "444D",
+      "hex": "0107ff",
+      "assembly": "LD BC,&FF07"
+    },
+    {
+      "address": "4450",
+      "hex": "01052a",
+      "assembly": "LD BC,&2A05"
+    },
+    {
+      "address": "4453",
+      "hex": "ee36",
+      "assembly": "XOR &36"
+    },
+    {
+      "address": "4455",
+      "hex": "e5",
+      "assembly": "PUSH HL"
+    },
+    {
+      "address": "4456",
+      "hex": "cd2a44",
+      "assembly": "CALL &442A"
+    },
+    {
+      "address": "4459",
+      "hex": "110b00",
+      "assembly": "LD DE,&000B"
+    },
+    {
+      "address": "445C",
+      "hex": "e1",
+      "assembly": "POP HL"
+    },
+    {
+      "address": "445D",
+      "hex": "19",
+      "assembly": "ADD HL,DE"
+    },
+    {
+      "address": "445E",
+      "hex": "ae",
+      "assembly": "XOR (HL)"
+    },
+    {
+      "address": "445F",
+      "hex": "e60f",
+      "assembly": "AND &0F"
+    },
+    {
+      "address": "4461",
+      "hex": "ae",
+      "assembly": "XOR (HL)"
+    },
+    {
+      "address": "4462",
+      "hex": "77",
+      "assembly": "LD (HL),A"
+    },
+    {
+      "address": "4463",
+      "hex": "11faff",
+      "assembly": "LD DE,&FFFA"
+    },
+    {
+      "address": "4466",
+      "hex": "19",
+      "assembly": "ADD HL,DE"
+    },
+    {
+      "address": "4467",
+      "hex": "7e",
+      "assembly": "LD A,(HL)"
+    },
+    {
+      "address": "4468",
+      "hex": "81",
+      "assembly": "ADD A,C"
+    },
+    {
+      "address": "4469",
+      "hex": "77",
+      "assembly": "LD (HL),A"
+    },
+    {
+      "address": "446A",
+      "hex": "23",
+      "assembly": "INC HL"
+    },
+    {
+      "address": "446B",
+      "hex": "7e",
+      "assembly": "LD A,(HL)"
+    },
+    {
+      "address": "446C",
+      "hex": "80",
+      "assembly": "ADD A,B"
+    },
+    {
+      "address": "446D",
+      "hex": "77",
+      "assembly": "LD (HL),A"
+    },
+    {
+      "address": "446E",
+      "hex": "c9",
+      "assembly": "RET"
+    },
+    {
+      "address": "465C",
+      "hex": "f5",
+      "assembly": "PUSH AF"
+    },
+    {
+      "address": "465D",
+      "hex": "cd243b",
+      "assembly": "CALL &3B24"
+    },
+    {
+      "address": "4660",
+      "hex": "d9",
+      "assembly": "EXX"
+    },
+    {
+      "address": "4661",
+      "hex": "f1",
+      "assembly": "POP AF"
+    },
+    {
+      "address": "4662",
+      "hex": "325b46",
+      "assembly": "LD (&465B),A"
+    },
+    {
+      "address": "4665",
+      "hex": "cd6c46",
+      "assembly": "CALL &466C"
+    },
+    {
+      "address": "4668",
+      "hex": "3a5b46",
+      "assembly": "LD A,(&465B)"
+    },
+    {
+      "address": "466B",
+      "hex": "c9",
+      "assembly": "RET"
+    },
+    {
+      "address": "466C",
+      "hex": "118b46",
+      "assembly": "LD DE,&468B"
+    },
+    {
+      "address": "466F",
+      "hex": "d5",
+      "assembly": "PUSH DE"
+    },
+    {
+      "address": "4670",
+      "hex": "4f",
+      "assembly": "LD C,A"
+    },
+    {
+      "address": "4671",
+      "hex": "87",
+      "assembly": "ADD A,A"
+    },
+    {
+      "address": "4672",
+      "hex": "87",
+      "assembly": "ADD A,A"
+    },
+    {
+      "address": "4673",
+      "hex": "81",
+      "assembly": "ADD A,C"
+    },
+    {
+      "address": "4674",
+      "hex": "c6b7",
+      "assembly": "ADD A,&B7"
+    },
+    {
+      "address": "4676",
+      "hex": "6f",
+      "assembly": "LD L,A"
+    },
+    {
+      "address": "4677",
+      "hex": "ce47",
+      "assembly": "ADC A,&47"
+    },
+    {
+      "address": "4679",
+      "hex": "95",
+      "assembly": "SUB L"
+    },
+    {
+      "address": "467A",
+      "hex": "67",
+      "assembly": "LD H,A"
+    },
+    {
+      "address": "467B",
+      "hex": "7e",
+      "assembly": "LD A,(HL)"
+    },
+    {
+      "address": "467C",
+      "hex": "325746",
+      "assembly": "LD (&4657),A"
+    },
+    {
+      "address": "467F",
+      "hex": "23",
+      "assembly": "INC HL"
+    },
+    {
+      "address": "4680",
+      "hex": "5e",
+      "assembly": "LD E,(HL)"
+    },
+    {
+      "address": "4681",
+      "hex": "23",
+      "assembly": "INC HL"
+    },
+    {
+      "address": "4682",
+      "hex": "56",
+      "assembly": "LD D,(HL)"
+    },
+    {
+      "address": "4683",
+      "hex": "23",
+      "assembly": "INC HL"
+    },
+    {
+      "address": "4684",
+      "hex": "7e",
+      "assembly": "LD A,(HL)"
+    },
+    {
+      "address": "4685",
+      "hex": "23",
+      "assembly": "INC HL"
+    },
+    {
+      "address": "4686",
+      "hex": "66",
+      "assembly": "LD H,(HL)"
+    },
+    {
+      "address": "4687",
+      "hex": "6f",
+      "assembly": "LD L,A"
+    },
+    {
+      "address": "4688",
+      "hex": "d5",
+      "assembly": "PUSH DE"
+    },
+    {
+      "address": "4689",
+      "hex": "d9",
+      "assembly": "EXX"
+    },
+    {
+      "address": "468A",
+      "hex": "c9",
+      "assembly": "RET"
+    },
+    {
+      "address": "468B",
+      "hex": "d9",
+      "assembly": "EXX"
+    },
+    {
+      "address": "468C",
+      "hex": "c8",
+      "assembly": "RET Z"
+    },
+    {
+      "address": "468D",
+      "hex": "e5",
+      "assembly": "PUSH HL"
+    },
+    {
+      "address": "468E",
+      "hex": "dde1",
+      "assembly": "POP IX"
+    },
+    {
+      "address": "4690",
+      "hex": "cb51",
+      "assembly": "BIT 2,C"
+    },
+    {
+      "address": "4692",
+      "hex": "2015",
+      "assembly": "JR NZ,&46A9"
+    },
+    {
+      "address": "4694",
+      "hex": "21a939",
+      "assembly": "LD HL,&39A9"
+    },
+    {
+      "address": "4697",
+      "hex": "7e",
+      "assembly": "LD A,(HL)"
+    },
+    {
+      "address": "4698",
+      "hex": "23",
+      "assembly": "INC HL"
+    },
+    {
+      "address": "4699",
+      "hex": "66",
+      "assembly": "LD H,(HL)"
+    },
+    {
+      "address": "469A",
+      "hex": "6f",
+      "assembly": "LD L,A"
+    },
+    {
+      "address": "469B",
+      "hex": "b4",
+      "assembly": "OR H"
+    },
+    {
+      "address": "469C",
+      "hex": "2824",
+      "assembly": "JR Z,&46C2"
+    },
+    {
+      "address": "469E",
+      "hex": "e5",
+      "assembly": "PUSH HL"
+    },
+    {
+      "address": "469F",
+      "hex": "cdb219",
+      "assembly": "CALL &19B2"
+    },
+    {
+      "address": "46A2",
+      "hex": "e1",
+      "assembly": "POP HL"
+    },
+    {
+      "address": "46A3",
+      "hex": "383b",
+      "assembly": "JR C,&46E0"
+    },
+    {
+      "address": "46A5",
+      "hex": "20f0",
+      "assembly": "JR NZ,&4697"
+    },
+    {
+      "address": "46A7",
+      "hex": "1819",
+      "assembly": "JR &46C2"
+    },
+    {
+      "address": "46A9",
+      "hex": "21ab39",
+      "assembly": "LD HL,&39AB"
+    },
+    {
+      "address": "46AC",
+      "hex": "7e",
+      "assembly": "LD A,(HL)"
+    },
+    {
+      "address": "46AD",
+      "hex": "23",
+      "assembly": "INC HL"
+    },
+    {
+      "address": "46AE",
+      "hex": "66",
+      "assembly": "LD H,(HL)"
+    },
+    {
+      "address": "46AF",
+      "hex": "6f",
+      "assembly": "LD L,A"
+    },
+    {
+      "address": "46B0",
+      "hex": "b4",
+      "assembly": "OR H"
+    },
+    {
+      "address": "46B1",
+      "hex": "2809",
+      "assembly": "JR Z,&46BC"
+    },
+    {
+      "address": "46B3",
+      "hex": "e5",
+      "assembly": "PUSH HL"
+    },
+    {
+      "address": "46B4",
+      "hex": "cdb219",
+      "assembly": "CALL &19B2"
+    },
+    {
+      "address": "46B7",
+      "hex": "e1",
+      "assembly": "POP HL"
+    },
+    {
+      "address": "46B8",
+      "hex": "3828",
+      "assembly": "JR C,&46E2"
+    },
+    {
+      "address": "46BA",
+      "hex": "20f0",
+      "assembly": "JR NZ,&46AC"
+    },
+    {
+      "address": "46BC",
+      "hex": "cd3b2b",
+      "assembly": "CALL &2B3B"
+    },
+    {
+      "address": "46BF",
+      "hex": "5d",
+      "assembly": "LD E,L"
+    },
+    {
+      "address": "46C0",
+      "hex": "1806",
+      "assembly": "JR &46C8"
+    },
+    {
+      "address": "46C2",
+      "hex": "cd3b2b",
+      "assembly": "CALL &2B3B"
+    },
+    {
+      "address": "46C5",
+      "hex": "5d",
+      "assembly": "LD E,L"
+    },
+    {
+      "address": "46C6",
+      "hex": "23",
+      "assembly": "INC HL"
+    },
+    {
+      "address": "46C7",
+      "hex": "23",
+      "assembly": "INC HL"
+    },
+    {
+      "address": "46C8",
+      "hex": "fdcb0946",
+      "assembly": "BIT 0,(IY+9)"
+    },
+    {
+      "address": "46CC",
+      "hex": "2804",
+      "assembly": "JR Z,&46D2"
+    },
+    {
+      "address": "46CE",
+      "hex": "fd7d",
+      "assembly": "LD A,IYL"
+    },
+    {
+      "address": "46D0",
+      "hex": "bb",
+      "assembly": "CP E"
+    },
+    {
+      "address": "46D1",
+      "hex": "c8",
+      "assembly": "RET Z"
+    },
+    {
+      "address": "46D2",
+      "hex": "3aac24",
+      "assembly": "LD A,(&24AC)"
+    },
+    {
+      "address": "46D5",
+      "hex": "a7",
+      "assembly": "AND A"
+    },
+    {
+      "address": "46D6",
+      "hex": "c8",
+      "assembly": "RET Z"
+    },
+    {
+      "address": "46D7",
+      "hex": "cdb219",
+      "assembly": "CALL &19B2"
+    },
+    {
+      "address": "46DA",
+      "hex": "d0",
+      "assembly": "RET NC"
+    },
+    {
+      "address": "46DB",
+      "hex": "cd3b2b",
+      "assembly": "CALL &2B3B"
+    },
+    {
+      "address": "46DE",
+      "hex": "23",
+      "assembly": "INC HL"
+    },
+    {
+      "address": "46DF",
+      "hex": "23",
+      "assembly": "INC HL"
+    },
+    {
+      "address": "46E0",
+      "hex": "2b",
+      "assembly": "DEC HL"
+    },
+    {
+      "address": "46E1",
+      "hex": "2b",
+      "assembly": "DEC HL"
+    },
+    {
+      "address": "46E2",
+      "hex": "e5",
+      "assembly": "PUSH HL"
+    },
+    {
+      "address": "46E3",
+      "hex": "dde1",
+      "assembly": "POP IX"
+    },
+    {
+      "address": "46E5",
+      "hex": "3a5746",
+      "assembly": "LD A,(&4657)"
+    },
+    {
+      "address": "46E8",
+      "hex": "ddcb094e",
+      "assembly": "BIT 1,(IX+9)"
+    },
+    {
+      "address": "46EC",
+      "hex": "2808",
+      "assembly": "JR Z,&46F6"
+    },
+    {
+      "address": "46EE",
+      "hex": "dda6fa",
+      "assembly": "AND (IX-6)"
+    },
+    {
+      "address": "46F1",
+      "hex": "dd77fa",
+      "assembly": "LD (IX-6),A"
+    },
+    {
+      "address": "46F4",
+      "hex": "1806",
+      "assembly": "JR &46FC"
+    },
+    {
+      "address": "46F6",
+      "hex": "dda60c",
+      "assembly": "AND (IX+12)"
+    },
+    {
+      "address": "46F9",
+      "hex": "dd770c",
+      "assembly": "LD (IX+12),A"
+    },
+    {
+      "address": "46FC",
+      "hex": "af",
+      "assembly": "XOR A"
+    },
+    {
+      "address": "46FD",
+      "hex": "d601",
+      "assembly": "SUB &01"
+    },
+    {
+      "address": "46FF",
+      "hex": "f5",
+      "assembly": "PUSH AF"
+    },
+    {
+      "address": "4700",
+      "hex": "dde5",
+      "assembly": "PUSH IX"
+    },
+    {
+      "address": "4702",
+      "hex": "fde5",
+      "assembly": "PUSH IY"
+    },
+    {
+      "address": "4704",
+      "hex": "cd0d47",
+      "assembly": "CALL &470D"
+    },
+    {
+      "address": "4707",
+      "hex": "fde1",
+      "assembly": "POP IY"
+    },
+    {
+      "address": "4709",
+      "hex": "dde1",
+      "assembly": "POP IX"
+    },
+    {
+      "address": "470B",
+      "hex": "f1",
+      "assembly": "POP AF"
+    },
+    {
+      "address": "470C",
+      "hex": "c9",
+      "assembly": "RET"
+    },
+    {
+      "address": "4C86",
+      "hex": "3af036",
+      "assembly": "LD A,(&36F0)"
+    },
+    {
+      "address": "4C89",
+      "hex": "3c",
+      "assembly": "INC A"
+    },
+    {
+      "address": "4C8A",
+      "hex": "2006",
+      "assembly": "JR NZ,&4C92"
+    },
+    {
+      "address": "4C8C",
+      "hex": "fd7e0c",
+      "assembly": "LD A,(IY+12)"
+    },
+    {
+      "address": "4C8F",
+      "hex": "3c",
+      "assembly": "INC A"
+    },
+    {
+      "address": "4C90",
+      "hex": "2809",
+      "assembly": "JR Z,&4C9B"
+    },
+    {
+      "address": "4C92",
+      "hex": "cd2950",
+      "assembly": "CALL &5029"
+    },
+    {
+      "address": "4C95",
+      "hex": "cda74c",
+      "assembly": "CALL &4CA7"
+    },
+    {
+      "address": "4C98",
+      "hex": "c3c74f",
+      "assembly": "JP &4FC7"
+    },
+    {
+      "address": "4C9B",
+      "hex": "fde5",
+      "assembly": "PUSH IY"
+    },
+    {
+      "address": "4C9D",
+      "hex": "cddc4d",
+      "assembly": "CALL &4DDC"
+    },
+    {
+      "address": "4CA0",
+      "hex": "fde1",
+      "assembly": "POP IY"
+    },
+    {
+      "address": "4CA2",
+      "hex": "fd360bff",
+      "assembly": "LD (IY+11),&FF"
+    },
+    {
+      "address": "4CA6",
+      "hex": "c9",
+      "assembly": "RET"
+    },
+    {
+      "address": "4D98",
+      "hex": "fd4608",
+      "assembly": "LD B,(IY+8)"
+    },
+    {
+      "address": "4D9B",
+      "hex": "fdcb0c6e",
+      "assembly": "BIT 5,(IY+12)"
+    },
+    {
+      "address": "4D9F",
+      "hex": "fdcb0cee",
+      "assembly": "SET 5,(IY+12)"
+    },
+    {
+      "address": "4DA3",
+      "hex": "3e2c",
+      "assembly": "LD A,&2C"
+    },
+    {
+      "address": "4DA5",
+      "hex": "281c",
+      "assembly": "JR Z,&4DC3"
+    },
+    {
+      "address": "4DA7",
+      "hex": "fd7e0f",
+      "assembly": "LD A,(IY+15)"
+    },
+    {
+      "address": "4DAA",
+      "hex": "a7",
+      "assembly": "AND A"
+    },
+    {
+      "address": "4DAB",
+      "hex": "2010",
+      "assembly": "JR NZ,&4DBD"
+    },
+    {
+      "address": "4DAD",
+      "hex": "3e2c",
+      "assembly": "LD A,&2C"
+    },
+    {
+      "address": "4DAF",
+      "hex": "b8",
+      "assembly": "CP B"
+    },
+    {
+      "address": "4DB0",
+      "hex": "202a",
+      "assembly": "JR NZ,&4DDC"
+    },
+    {
+      "address": "4DB2",
+      "hex": "fd360f50",
+      "assembly": "LD (IY+15),&50"
+    },
+    {
+      "address": "4DB6",
+      "hex": "3e04",
+      "assembly": "LD A,&04"
+    },
+    {
+      "address": "4DB8",
+      "hex": "cd1c2b",
+      "assembly": "CALL &2B1C"
+    },
+    {
+      "address": "4DBB",
+      "hex": "1819",
+      "assembly": "JR &4DD6"
+    },
+    {
+      "address": "4DBD",
+      "hex": "e607",
+      "assembly": "AND &07"
+    },
+    {
+      "address": "4DBF",
+      "hex": "2015",
+      "assembly": "JR NZ,&4DD6"
+    },
+    {
+      "address": "4DC1",
+      "hex": "3e2b",
+      "assembly": "LD A,&2B"
+    },
+    {
+      "address": "4DC3",
+      "hex": "fd7708",
+      "assembly": "LD (IY+8),A"
+    },
+    {
+      "address": "4DC6",
+      "hex": "fd360f00",
+      "assembly": "LD (IY+15),&00"
+    },
+    {
+      "address": "4DCA",
+      "hex": "b8",
+      "assembly": "CP B"
+    },
+    {
+      "address": "4DCB",
+      "hex": "280f",
+      "assembly": "JR Z,&4DDC"
+    },
+    {
+      "address": "4DCD",
+      "hex": "1807",
+      "assembly": "JR &4DD6"
+    },
+    {
+      "address": "4DCF",
+      "hex": "fd7e0f",
+      "assembly": "LD A,(IY+15)"
+    },
+    {
+      "address": "4DD2",
+      "hex": "e6f0",
+      "assembly": "AND &F0"
+    },
+    {
+      "address": "4DD4",
+      "hex": "2806",
+      "assembly": "JR Z,&4DDC"
+    },
+    {
+      "address": "4DD6",
+      "hex": "cdb64f",
+      "assembly": "CALL &4FB6"
+    },
+    {
+      "address": "4DD9",
+      "hex": "cde24f",
+      "assembly": "CALL &4FE2"
+    },
+    {
+      "address": "4DDC",
+      "hex": "cd2950",
+      "assembly": "CALL &5029"
+    },
+    {
+      "address": "4DDF",
+      "hex": "3eff",
+      "assembly": "LD A,&FF"
+    },
+    {
+      "address": "4DE1",
+      "hex": "cdef4f",
+      "assembly": "CALL &4FEF"
+    },
+    {
+      "address": "4DE4",
+      "hex": "c3c74f",
+      "assembly": "JP &4FC7"
+    },
+    {
+      "address": "4FEF",
+      "hex": "fda60c",
+      "assembly": "AND (IY+12)"
+    },
+    {
+      "address": "4FF2",
+      "hex": "feff",
+      "assembly": "CP &FF"
+    },
+    {
+      "address": "4FF4",
+      "hex": "32e94b",
+      "assembly": "LD (&4BE9),A"
+    },
+    {
+      "address": "4FF7",
+      "hex": "c8",
+      "assembly": "RET Z"
+    },
+    {
+      "address": "4FF8",
+      "hex": "cd0f44",
+      "assembly": "CALL &440F"
+    },
+    {
+      "address": "4FFB",
+      "hex": "feff",
+      "assembly": "CP &FF"
+    },
+    {
+      "address": "4FFD",
+      "hex": "32e94b",
+      "assembly": "LD (&4BE9),A"
+    },
+    {
+      "address": "5000",
+      "hex": "c8",
+      "assembly": "RET Z"
+    },
+    {
+      "address": "5001",
+      "hex": "f5",
+      "assembly": "PUSH AF"
+    },
+    {
+      "address": "5002",
+      "hex": "32e94b",
+      "assembly": "LD (&4BE9),A"
+    },
+    {
+      "address": "5005",
+      "hex": "cdd04c",
+      "assembly": "CALL &4CD0"
+    },
+    {
+      "address": "5008",
+      "hex": "c1",
+      "assembly": "POP BC"
+    },
+    {
+      "address": "5009",
+      "hex": "3f",
+      "assembly": "CCF"
+    },
+    {
+      "address": "500A",
+      "hex": "d21f50",
+      "assembly": "JP NC,&501F"
+    },
+    {
+      "address": "500D",
+      "hex": "f5",
+      "assembly": "PUSH AF"
+    },
+    {
+      "address": "500E",
+      "hex": "b8",
+      "assembly": "CP B"
+    },
+    {
+      "address": "500F",
+      "hex": "2005",
+      "assembly": "JR NZ,&5016"
+    },
+    {
+      "address": "5011",
+      "hex": "3eff",
+      "assembly": "LD A,&FF"
+    },
+    {
+      "address": "5013",
+      "hex": "32e94b",
+      "assembly": "LD (&4BE9),A"
+    },
+    {
+      "address": "5016",
+      "hex": "cdb64f",
+      "assembly": "CALL &4FB6"
+    },
+    {
+      "address": "5019",
+      "hex": "f1",
+      "assembly": "POP AF"
+    },
+    {
+      "address": "501A",
+      "hex": "cd5244",
+      "assembly": "CALL &4452"
+    },
+    {
+      "address": "501D",
+      "hex": "37",
+      "assembly": "SCF"
+    },
+    {
+      "address": "501E",
+      "hex": "c9",
+      "assembly": "RET"
+    },
+    {
+      "address": "501F",
+      "hex": "3af036",
+      "assembly": "LD A,(&36F0)"
+    },
+    {
+      "address": "5022",
+      "hex": "3c",
+      "assembly": "INC A"
+    },
+    {
+      "address": "5023",
+      "hex": "c8",
+      "assembly": "RET Z"
+    },
+    {
+      "address": "5024",
+      "hex": "3e06",
+      "assembly": "LD A,&06"
+    },
+    {
+      "address": "5026",
+      "hex": "c31c2b",
+      "assembly": "JP &2B1C"
+    }
+  ],
+  "limits": [
+    "Native push chain resolves atomically in the same tick; original propagates contact masks.",
+    "Behavior 10 inertia and spring compression timing are not fully ported.",
+    "Autonomous movers, directional bodies and disappearing objects retain their separate rules."
+  ]
+}

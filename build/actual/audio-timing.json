@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "samples": 66590,
+  "elapsedSeconds": 3.0133332,
+  "samplesPerSecond": 22098.45230524125,
+  "expectedRate": 22050,
+  "error": null
+}

@@ -182,9 +182,9 @@ def behaviors(m):
         4:'initialize_direction_F7',5:'initialize_direction_FB',6:'reverse_direction',
         7:'turn_minus_two',8:'turn_plus_two',9:'random_odd_direction',
         11:'random_direction',12:'periodic_random_direction',13:'random_even_direction',
-        14:'toggle_entities',15:'pursue_dominant_axis',17:'disappear',
+        14:'toggle_entities',15:'pursue_shorter_nonzero_axis',16:'vertical_platform',17:'disappear',
         18:'initialize_vertical_52',21:'turn_minus_two_variant',22:'reverse_direction_variant',
-        23:'initialize_vertical_90',26:'pickup',28:'timed_platform',
+        23:'initialize_vertical_90',26:'pickup',28:'spring',
         29:'consume_shared_direction',30:'publish_shared_direction',
         33:'pursue_within_24',34:'remove_entity',36:'shared_timer',37:'pursue_by_crowns'}
     return [dict(typeId=i,address=(int.from_bytes(m[0x387f+2*(i-1):0x3881+2*(i-1)],'little') if i else 0),

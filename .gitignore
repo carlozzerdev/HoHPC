@@ -2,3 +2,7 @@
 src/bin/
 src/obj/
 **/__pycache__/
+tools/audio-verification/bin/
+tools/audio-verification/obj/
+analysis/audio-check/
+analysis/audio-baseline/

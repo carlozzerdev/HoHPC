@@ -1,0 +1,1705 @@
+{
+  "evidenceKind": "static bytes from supplied CPC disk; not a runtime equivalence test",
+  "diskSha256": "ebea9f40e43763f1d44d16766635a55505682e535b2712e1d60451f0a657b3fd",
+  "memorySha256": "04a7f6b6469b426a2f078e96c1016e7dd5a81c71fa2a563913e5fb666138d3cf",
+  "roomCount": 301,
+  "roomObjects": 2936,
+  "dispatchEntries": 37,
+  "coverage": [
+    {
+      "id": 0,
+      "address": null,
+      "name": "static",
+      "roomInstances": 2178,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 1,
+      "address": "4DDC",
+      "name": "gravity/contact push",
+      "roomInstances": 94,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 2,
+      "address": "4D46",
+      "name": "direction mask FE",
+      "roomInstances": 32,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 3,
+      "address": "4D4A",
+      "name": "direction mask FD",
+      "roomInstances": 5,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 4,
+      "address": "4D4E",
+      "name": "direction mask F7",
+      "roomInstances": 17,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 5,
+      "address": "4D52",
+      "name": "direction mask FB",
+      "roomInstances": 20,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 6,
+      "address": "4DF3",
+      "name": "reverse direction",
+      "roomInstances": 13,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 7,
+      "address": "4DF8",
+      "name": "turn -2",
+      "roomInstances": 5,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 8,
+      "address": "4DFD",
+      "name": "turn +2",
+      "roomInstances": 3,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 9,
+      "address": "4E11",
+      "name": "random odd direction",
+      "roomInstances": 44,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 10,
+      "address": "4C86",
+      "name": "inertial/contact body",
+      "roomInstances": 56,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 11,
+      "address": "4E02",
+      "name": "random direction",
+      "roomInstances": 9,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 12,
+      "address": "4E07",
+      "name": "periodic random direction",
+      "roomInstances": 6,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 13,
+      "address": "4E0C",
+      "name": "random even direction",
+      "roomInstances": 9,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 14,
+      "address": "4CD6",
+      "name": "switch",
+      "roomInstances": 4,
+      "nativeStatus": "pending",
+      "note": ""
+    },
+    {
+      "id": 15,
+      "address": "4E16",
+      "name": "pursue shorter nonzero axis",
+      "roomInstances": 9,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 16,
+      "address": "4E82",
+      "name": "vertical platform",
+      "roomInstances": 0,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 17,
+      "address": "4D80",
+      "name": "disappear",
+      "roomInstances": 0,
+      "nativeStatus": "pending",
+      "note": ""
+    },
+    {
+      "id": 18,
+      "address": "4D31",
+      "name": "initialize vertical 52",
+      "roomInstances": 1,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 19,
+      "address": "4D3B",
+      "name": "conditional gravity",
+      "roomInstances": 5,
+      "nativeStatus": "pending",
+      "note": ""
+    },
+    {
+      "id": 20,
+      "address": "4D66",
+      "name": "conditional disappearance",
+      "roomInstances": 104,
+      "nativeStatus": "pending",
+      "note": ""
+    },
+    {
+      "id": 21,
+      "address": "4DED",
+      "name": "turn -2 variant",
+      "roomInstances": 3,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 22,
+      "address": "4DE7",
+      "name": "reverse variant",
+      "roomInstances": 3,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 23,
+      "address": "4D2E",
+      "name": "initialize vertical 90",
+      "roomInstances": 27,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 24,
+      "address": "4D63",
+      "name": "conditional disappearance C0",
+      "roomInstances": 2,
+      "nativeStatus": "pending",
+      "note": ""
+    },
+    {
+      "id": 25,
+      "address": "4C76",
+      "name": "double interaction/projectile",
+      "roomInstances": 0,
+      "nativeStatus": "pending",
+      "note": "Explicit native pickup and projectile paths also exist outside room dispatch."
+    },
+    {
+      "id": 26,
+      "address": "4DCF",
+      "name": "pickup",
+      "roomInstances": 0,
+      "nativeStatus": "partial",
+      "note": "Explicit native pickup and projectile paths also exist outside room dispatch."
+    },
+    {
+      "id": 27,
+      "address": "4C18",
+      "name": "teleport animation",
+      "roomInstances": 123,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 28,
+      "address": "4D98",
+      "name": "spring",
+      "roomInstances": 22,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 29,
+      "address": "4BFB",
+      "name": "shared direction consumer",
+      "roomInstances": 7,
+      "nativeStatus": "pending",
+      "note": ""
+    },
+    {
+      "id": 30,
+      "address": "4BEB",
+      "name": "shared direction publisher",
+      "roomInstances": 29,
+      "nativeStatus": "pending",
+      "note": ""
+    },
+    {
+      "id": 31,
+      "address": "4D5C",
+      "name": "disappear depending on active character",
+      "roomInstances": 78,
+      "nativeStatus": "pending",
+      "note": ""
+    },
+    {
+      "id": 32,
+      "address": "4C5E",
+      "name": "relative interaction",
+      "roomInstances": 12,
+      "nativeStatus": "pending",
+      "note": ""
+    },
+    {
+      "id": 33,
+      "address": "4F36",
+      "name": "nearby diagonal pursuit",
+      "roomInstances": 3,
+      "nativeStatus": "partial",
+      "note": ""
+    },
+    {
+      "id": 34,
+      "address": "4D92",
+      "name": "remove body",
+      "roomInstances": 0,
+      "nativeStatus": "pending",
+      "note": ""
+    },
+    {
+      "id": 35,
+      "address": "4C3F",
+      "name": "interaction variant",
+      "roomInstances": 6,
+      "nativeStatus": "pending",
+      "note": ""
+    },
+    {
+      "id": 36,
+      "address": "4C29",
+      "name": "shared timer",
+      "roomInstances": 6,
+      "nativeStatus": "pending",
+      "note": ""
+    },
+    {
+      "id": 37,
+      "address": "4E1B",
+      "name": "pursue/flee by crowns",
+      "roomInstances": 1,
+      "nativeStatus": "partial",
+      "note": ""
+    }
+  ],
+  "matchedInstructions": [
+    {
+      "address": "21D8",
+      "bytes": "ed4b0e01",
+      "assembly": "LD BC,(&010E)"
+    },
+    {
+      "address": "21DC",
+      "bytes": "79",
+      "assembly": "LD A,C"
+    },
+    {
+      "address": "21DD",
+      "bytes": "3d",
+      "assembly": "DEC A"
+    },
+    {
+      "address": "21DE",
+      "bytes": "e6f0",
+      "assembly": "AND &F0"
+    },
+    {
+      "address": "21E0",
+      "bytes": "4f",
+      "assembly": "LD C,A"
+    },
+    {
+      "address": "21E1",
+      "bytes": "cdf821",
+      "assembly": "CALL &21F8"
+    },
+    {
+      "address": "21E4",
+      "bytes": "d8",
+      "assembly": "RET C"
+    },
+    {
+      "address": "21E5",
+      "bytes": "13",
+      "assembly": "INC DE"
+    },
+    {
+      "address": "21E6",
+      "bytes": "13",
+      "assembly": "INC DE"
+    },
+    {
+      "address": "21E7",
+      "bytes": "13",
+      "assembly": "INC DE"
+    },
+    {
+      "address": "21E8",
+      "bytes": "1a",
+      "assembly": "LD A,(DE)"
+    },
+    {
+      "address": "21E9",
+      "bytes": "f6f1",
+      "assembly": "OR &F1"
+    },
+    {
+      "address": "21EB",
+      "bytes": "3c",
+      "assembly": "INC A"
+    },
+    {
+      "address": "21EC",
+      "bytes": "c8",
+      "assembly": "RET Z"
+    },
+    {
+      "address": "21ED",
+      "bytes": "37",
+      "assembly": "SCF"
+    },
+    {
+      "address": "21EE",
+      "bytes": "c9",
+      "assembly": "RET"
+    },
+    {
+      "address": "25BF",
+      "bytes": "fd7e07",
+      "assembly": "LD A,(IY+7)"
+    },
+    {
+      "address": "25C2",
+      "bytes": "fe84",
+      "assembly": "CP &84"
+    },
+    {
+      "address": "25C4",
+      "bytes": "300f",
+      "assembly": "JR NC,&25D5"
+    },
+    {
+      "address": "25C6",
+      "bytes": "af",
+      "assembly": "XOR A"
+    },
+    {
+      "address": "25C7",
+      "bytes": "328f24",
+      "assembly": "LD (&248F),A"
+    },
+    {
+      "address": "25CA",
+      "bytes": "3abc1e",
+      "assembly": "LD A,(&1EBC)"
+    },
+    {
+      "address": "25CD",
+      "bytes": "a7",
+      "assembly": "AND A"
+    },
+    {
+      "address": "25CE",
+      "bytes": "2005",
+      "assembly": "JR NZ,&25D5"
+    },
+    {
+      "address": "25D0",
+      "bytes": "3e06",
+      "assembly": "LD A,&06"
+    },
+    {
+      "address": "25D2",
+      "bytes": "325846",
+      "assembly": "LD (&4658),A"
+    },
+    {
+      "address": "2A10",
+      "bytes": "3a8424",
+      "assembly": "LD A,(&2484)"
+    },
+    {
+      "address": "2A13",
+      "bytes": "47",
+      "assembly": "LD B,A"
+    },
+    {
+      "address": "2A14",
+      "bytes": "3d",
+      "assembly": "DEC A"
+    },
+    {
+      "address": "2A15",
+      "bytes": "2004",
+      "assembly": "JR NZ,&2A1B"
+    },
+    {
+      "address": "2A17",
+      "bytes": "af",
+      "assembly": "XOR A"
+    },
+    {
+      "address": "2A18",
+      "bytes": "328324",
+      "assembly": "LD (&2483),A"
+    },
+    {
+      "address": "2A1B",
+      "bytes": "3aac24",
+      "assembly": "LD A,(&24AC)"
+    },
+    {
+      "address": "2A1E",
+      "bytes": "a7",
+      "assembly": "AND A"
+    },
+    {
+      "address": "2A1F",
+      "bytes": "c0",
+      "assembly": "RET NZ"
+    },
+    {
+      "address": "2A20",
+      "bytes": "3a1201",
+      "assembly": "LD A,(&0112)"
+    },
+    {
+      "address": "2A23",
+      "bytes": "1f",
+      "assembly": "RRA"
+    },
+    {
+      "address": "2A24",
+      "bytes": "d8",
+      "assembly": "RET C"
+    },
+    {
+      "address": "2A25",
+      "bytes": "0e00",
+      "assembly": "LD C,&00"
+    },
+    {
+      "address": "2A27",
+      "bytes": "fd6e0d",
+      "assembly": "LD L,(IY+13)"
+    },
+    {
+      "address": "2A2A",
+      "bytes": "fd660e",
+      "assembly": "LD H,(IY+14)"
+    },
+    {
+      "address": "2A2D",
+      "bytes": "7c",
+      "assembly": "LD A,H"
+    },
+    {
+      "address": "2A2E",
+      "bytes": "b5",
+      "assembly": "OR L"
+    },
+    {
+      "address": "2A2F",
+      "bytes": "2822",
+      "assembly": "JR Z,&2A53"
+    },
+    {
+      "address": "2A31",
+      "bytes": "e5",
+      "assembly": "PUSH HL"
+    },
+    {
+      "address": "2A32",
+      "bytes": "dde1",
+      "assembly": "POP IX"
+    },
+    {
+      "address": "2A34",
+      "bytes": "ddcb0946",
+      "assembly": "BIT 0,(IX+9)"
+    },
+    {
+      "address": "2A38",
+      "bytes": "2807",
+      "assembly": "JR Z,&2A41"
+    },
+    {
+      "address": "2A3A",
+      "bytes": "dd7e0b",
+      "assembly": "LD A,(IX+11)"
+    },
+    {
+      "address": "2A3D",
+      "bytes": "f6cf",
+      "assembly": "OR &CF"
+    },
+    {
+      "address": "2A3F",
+      "bytes": "3c",
+      "assembly": "INC A"
+    },
+    {
+      "address": "2A40",
+      "bytes": "c0",
+      "assembly": "RET NZ"
+    },
+    {
+      "address": "2A41",
+      "bytes": "dd7e08",
+      "assembly": "LD A,(IX+8)"
+    },
+    {
+      "address": "2A44",
+      "bytes": "e67f",
+      "assembly": "AND &7F"
+    },
+    {
+      "address": "2A46",
+      "bytes": "fe57",
+      "assembly": "CP &57"
+    },
+    {
+      "address": "2A48",
+      "bytes": "2835",
+      "assembly": "JR Z,&2A7F"
+    },
+    {
+      "address": "2A4A",
+      "bytes": "fe2b",
+      "assembly": "CP &2B"
+    },
+    {
+      "address": "2A4C",
+      "bytes": "2804",
+      "assembly": "JR Z,&2A52"
+    },
+    {
+      "address": "2A4E",
+      "bytes": "fe2c",
+      "assembly": "CP &2C"
+    },
+    {
+      "address": "2A50",
+      "bytes": "2001",
+      "assembly": "JR NZ,&2A53"
+    },
+    {
+      "address": "2A52",
+      "bytes": "0c",
+      "assembly": "INC C"
+    },
+    {
+      "address": "2A53",
+      "bytes": "3a8424",
+      "assembly": "LD A,(&2484)"
+    },
+    {
+      "address": "2A56",
+      "bytes": "e602",
+      "assembly": "AND &02"
+    },
+    {
+      "address": "2A58",
+      "bytes": "2009",
+      "assembly": "JR NZ,&2A63"
+    },
+    {
+      "address": "2A5A",
+      "bytes": "c5",
+      "assembly": "PUSH BC"
+    },
+    {
+      "address": "2A5B",
+      "bytes": "3e01",
+      "assembly": "LD A,&01"
+    },
+    {
+      "address": "2A5D",
+      "bytes": "cd4341",
+      "assembly": "CALL &4143"
+    },
+    {
+      "address": "2A60",
+      "bytes": "c1",
+      "assembly": "POP BC"
+    },
+    {
+      "address": "2A61",
+      "bytes": "2801",
+      "assembly": "JR Z,&2A64"
+    },
+    {
+      "address": "2A63",
+      "bytes": "0c",
+      "assembly": "INC C"
+    },
+    {
+      "address": "2A64",
+      "bytes": "79",
+      "assembly": "LD A,C"
+    },
+    {
+      "address": "2A65",
+      "bytes": "87",
+      "assembly": "ADD A,A"
+    },
+    {
+      "address": "2A66",
+      "bytes": "87",
+      "assembly": "ADD A,A"
+    },
+    {
+      "address": "2A67",
+      "bytes": "c604",
+      "assembly": "ADD A,&04"
+    },
+    {
+      "address": "2A69",
+      "bytes": "fe0c",
+      "assembly": "CP &0C"
+    },
+    {
+      "address": "2A6B",
+      "bytes": "2002",
+      "assembly": "JR NZ,&2A6F"
+    },
+    {
+      "address": "2A6D",
+      "bytes": "3e0a",
+      "assembly": "LD A,&0A"
+    },
+    {
+      "address": "2A6F",
+      "bytes": "328f24",
+      "assembly": "LD (&248F),A"
+    },
+    {
+      "address": "2A72",
+      "bytes": "3e85",
+      "assembly": "LD A,&85"
+    },
+    {
+      "address": "2A74",
+      "bytes": "05",
+      "assembly": "DEC B"
+    },
+    {
+      "address": "2A75",
+      "bytes": "2005",
+      "assembly": "JR NZ,&2A7C"
+    },
+    {
+      "address": "2A77",
+      "bytes": "218324",
+      "assembly": "LD HL,&2483"
+    },
+    {
+      "address": "2A7A",
+      "bytes": "3607",
+      "assembly": "LD (HL),&07"
+    },
+    {
+      "address": "2A7C",
+      "bytes": "c3212b",
+      "assembly": "JP &2B21"
+    },
+    {
+      "address": "2CAA",
+      "bytes": "c0",
+      "assembly": "RET NZ"
+    },
+    {
+      "address": "2CAB",
+      "bytes": "fdcb0946",
+      "assembly": "BIT 0,(IY+9)"
+    },
+    {
+      "address": "2CAF",
+      "bytes": "2838",
+      "assembly": "JR Z,&2CE9"
+    },
+    {
+      "address": "2CB1",
+      "bytes": "3aac24",
+      "assembly": "LD A,(&24AC)"
+    },
+    {
+      "address": "2CB4",
+      "bytes": "a7",
+      "assembly": "AND A"
+    },
+    {
+      "address": "2CB5",
+      "bytes": "202f",
+      "assembly": "JR NZ,&2CE6"
+    },
+    {
+      "address": "2CB7",
+      "bytes": "3abb1e",
+      "assembly": "LD A,(&1EBB)"
+    },
+    {
+      "address": "2CBA",
+      "bytes": "fe06",
+      "assembly": "CP &06"
+    },
+    {
+      "address": "2CBC",
+      "bytes": "281f",
+      "assembly": "JR Z,&2CDD"
+    },
+    {
+      "address": "2CBE",
+      "bytes": "fe07",
+      "assembly": "CP &07"
+    },
+    {
+      "address": "2CC0",
+      "bytes": "2024",
+      "assembly": "JR NZ,&2CE6"
+    },
+    {
+      "address": "2CC2",
+      "bytes": "cd3b2b",
+      "assembly": "CALL &2B3B"
+    },
+    {
+      "address": "2CC5",
+      "bytes": "fde5",
+      "assembly": "PUSH IY"
+    },
+    {
+      "address": "2CC7",
+      "bytes": "d1",
+      "assembly": "POP DE"
+    },
+    {
+      "address": "2CC8",
+      "bytes": "a7",
+      "assembly": "AND A"
+    },
+    {
+      "address": "2CC9",
+      "bytes": "ed52",
+      "assembly": "SBC HL,DE"
+    },
+    {
+      "address": "2CCB",
+      "bytes": "2809",
+      "assembly": "JR Z,&2CD6"
+    },
+    {
+      "address": "2CCD",
+      "bytes": "211401",
+      "assembly": "LD HL,&0114"
+    },
+    {
+      "address": "2CD0",
+      "bytes": "7e",
+      "assembly": "LD A,(HL)"
+    },
+    {
+      "address": "2CD1",
+      "bytes": "f603",
+      "assembly": "OR &03"
+    },
+    {
+      "address": "2CD3",
+      "bytes": "77",
+      "assembly": "LD (HL),A"
+    },
+    {
+      "address": "2CD4",
+      "bytes": "1810",
+      "assembly": "JR &2CE6"
+    },
+    {
+      "address": "2CD6",
+      "bytes": "3e05",
+      "assembly": "LD A,&05"
+    },
+    {
+      "address": "2CD8",
+      "bytes": "325846",
+      "assembly": "LD (&4658),A"
+    },
+    {
+      "address": "2CDB",
+      "bytes": "a7",
+      "assembly": "AND A"
+    },
+    {
+      "address": "2CDC",
+      "bytes": "c9",
+      "assembly": "RET"
+    },
+    {
+      "address": "2CDD",
+      "bytes": "fd4e09",
+      "assembly": "LD C,(IY+9)"
+    },
+    {
+      "address": "2CE0",
+      "bytes": "fd4604",
+      "assembly": "LD B,(IY+4)"
+    },
+    {
+      "address": "2CE3",
+      "bytes": "cd3847",
+      "assembly": "CALL &4738"
+    },
+    {
+      "address": "2CE6",
+      "bytes": "af",
+      "assembly": "XOR A"
+    },
+    {
+      "address": "2CE7",
+      "bytes": "37",
+      "assembly": "SCF"
+    },
+    {
+      "address": "2CE8",
+      "bytes": "c9",
+      "assembly": "RET"
+    },
+    {
+      "address": "4D2E",
+      "bytes": "3e90",
+      "assembly": "LD A,&90"
+    },
+    {
+      "address": "4D30",
+      "bytes": "013e52",
+      "assembly": "LD BC,&523E"
+    },
+    {
+      "address": "4D33",
+      "bytes": "fd7711",
+      "assembly": "LD (IY+17),A"
+    },
+    {
+      "address": "4D36",
+      "bytes": "fd360a10",
+      "assembly": "LD (IY+10),&10"
+    },
+    {
+      "address": "4D3A",
+      "bytes": "c9",
+      "assembly": "RET"
+    },
+    {
+      "address": "4D98",
+      "bytes": "fd4608",
+      "assembly": "LD B,(IY+8)"
+    },
+    {
+      "address": "4D9B",
+      "bytes": "fdcb0c6e",
+      "assembly": "BIT 5,(IY+12)"
+    },
+    {
+      "address": "4D9F",
+      "bytes": "fdcb0cee",
+      "assembly": "SET 5,(IY+12)"
+    },
+    {
+      "address": "4DA3",
+      "bytes": "3e2c",
+      "assembly": "LD A,&2C"
+    },
+    {
+      "address": "4DA5",
+      "bytes": "281c",
+      "assembly": "JR Z,&4DC3"
+    },
+    {
+      "address": "4DA7",
+      "bytes": "fd7e0f",
+      "assembly": "LD A,(IY+15)"
+    },
+    {
+      "address": "4DAA",
+      "bytes": "a7",
+      "assembly": "AND A"
+    },
+    {
+      "address": "4DAB",
+      "bytes": "2010",
+      "assembly": "JR NZ,&4DBD"
+    },
+    {
+      "address": "4DAD",
+      "bytes": "3e2c",
+      "assembly": "LD A,&2C"
+    },
+    {
+      "address": "4DAF",
+      "bytes": "b8",
+      "assembly": "CP B"
+    },
+    {
+      "address": "4DB0",
+      "bytes": "202a",
+      "assembly": "JR NZ,&4DDC"
+    },
+    {
+      "address": "4DB2",
+      "bytes": "fd360f50",
+      "assembly": "LD (IY+15),&50"
+    },
+    {
+      "address": "4DB6",
+      "bytes": "3e04",
+      "assembly": "LD A,&04"
+    },
+    {
+      "address": "4DB8",
+      "bytes": "cd1c2b",
+      "assembly": "CALL &2B1C"
+    },
+    {
+      "address": "4DBB",
+      "bytes": "1819",
+      "assembly": "JR &4DD6"
+    },
+    {
+      "address": "4DBD",
+      "bytes": "e607",
+      "assembly": "AND &07"
+    },
+    {
+      "address": "4DBF",
+      "bytes": "2015",
+      "assembly": "JR NZ,&4DD6"
+    },
+    {
+      "address": "4DC1",
+      "bytes": "3e2b",
+      "assembly": "LD A,&2B"
+    },
+    {
+      "address": "4DC3",
+      "bytes": "fd7708",
+      "assembly": "LD (IY+8),A"
+    },
+    {
+      "address": "4DC6",
+      "bytes": "fd360f00",
+      "assembly": "LD (IY+15),&00"
+    },
+    {
+      "address": "4DCA",
+      "bytes": "b8",
+      "assembly": "CP B"
+    },
+    {
+      "address": "4DCB",
+      "bytes": "280f",
+      "assembly": "JR Z,&4DDC"
+    },
+    {
+      "address": "4DCD",
+      "bytes": "1807",
+      "assembly": "JR &4DD6"
+    },
+    {
+      "address": "4E82",
+      "bytes": "3e01",
+      "assembly": "LD A,&01"
+    },
+    {
+      "address": "4E84",
+      "bytes": "cd1c2b",
+      "assembly": "CALL &2B1C"
+    },
+    {
+      "address": "4E87",
+      "bytes": "cddf4f",
+      "assembly": "CALL &4FDF"
+    },
+    {
+      "address": "4E8A",
+      "bytes": "fd7e11",
+      "assembly": "LD A,(IY+17)"
+    },
+    {
+      "address": "4E8D",
+      "bytes": "47",
+      "assembly": "LD B,A"
+    },
+    {
+      "address": "4E8E",
+      "bytes": "cb5f",
+      "assembly": "BIT 3,A"
+    },
+    {
+      "address": "4E90",
+      "bytes": "283c",
+      "assembly": "JR Z,&4ECE"
+    },
+    {
+      "address": "4E92",
+      "bytes": "1f",
+      "assembly": "RRA"
+    },
+    {
+      "address": "4E93",
+      "bytes": "1f",
+      "assembly": "RRA"
+    },
+    {
+      "address": "4E94",
+      "bytes": "e63c",
+      "assembly": "AND &3C"
+    },
+    {
+      "address": "4E96",
+      "bytes": "4f",
+      "assembly": "LD C,A"
+    },
+    {
+      "address": "4E97",
+      "bytes": "0f",
+      "assembly": "RRCA"
+    },
+    {
+      "address": "4E98",
+      "bytes": "81",
+      "assembly": "ADD A,C"
+    },
+    {
+      "address": "4E99",
+      "bytes": "ed44",
+      "assembly": "NEG"
+    },
+    {
+      "address": "4E9B",
+      "bytes": "c6c0",
+      "assembly": "ADD A,&C0"
+    },
+    {
+      "address": "4E9D",
+      "bytes": "fdbe07",
+      "assembly": "CP (IY+7)"
+    },
+    {
+      "address": "4EA0",
+      "bytes": "3016",
+      "assembly": "JR NC,&4EB8"
+    },
+    {
+      "address": "4EA2",
+      "bytes": "2aee36",
+      "assembly": "LD HL,(&36EE)"
+    },
+    {
+      "address": "4EA5",
+      "bytes": "cd312e",
+      "assembly": "CALL &2E31"
+    },
+    {
+      "address": "4EA8",
+      "bytes": "fdcb0ba6",
+      "assembly": "RES 4,(IY+11)"
+    },
+    {
+      "address": "4EAC",
+      "bytes": "3002",
+      "assembly": "JR NC,&4EB0"
+    },
+    {
+      "address": "4EAE",
+      "bytes": "2841",
+      "assembly": "JR Z,&4EF1"
+    },
+    {
+      "address": "4EB0",
+      "bytes": "cdb64f",
+      "assembly": "CALL &4FB6"
+    },
+    {
+      "address": "4EB3",
+      "bytes": "fd3507",
+      "assembly": "DEC (IY+7)"
+    },
+    {
+      "address": "4EB6",
+      "bytes": "1839",
+      "assembly": "JR &4EF1"
+    },
+    {
+      "address": "4EB8",
+      "bytes": "21814e",
+      "assembly": "LD HL,&4E81"
+    },
+    {
+      "address": "4EBB",
+      "bytes": "7e",
+      "assembly": "LD A,(HL)"
+    },
+    {
+      "address": "4EBC",
+      "bytes": "a7",
+      "assembly": "AND A"
+    },
+    {
+      "address": "4EBD",
+      "bytes": "2002",
+      "assembly": "JR NZ,&4EC1"
+    },
+    {
+      "address": "4EBF",
+      "bytes": "3602",
+      "assembly": "LD (HL),&02"
+    },
+    {
+      "address": "4EC1",
+      "bytes": "35",
+      "assembly": "DEC (HL)"
+    },
+    {
+      "address": "4EC2",
+      "bytes": "202d",
+      "assembly": "JR NZ,&4EF1"
+    },
+    {
+      "address": "4EC4",
+      "bytes": "78",
+      "assembly": "LD A,B"
+    },
+    {
+      "address": "4EC5",
+      "bytes": "ee08",
+      "assembly": "XOR &08"
+    },
+    {
+      "address": "4EC7",
+      "bytes": "fd7711",
+      "assembly": "LD (IY+17),A"
+    },
+    {
+      "address": "4ECA",
+      "bytes": "e608",
+      "assembly": "AND &08"
+    },
+    {
+      "address": "4ECC",
+      "bytes": "1823",
+      "assembly": "JR &4EF1"
+    },
+    {
+      "address": "4ECE",
+      "bytes": "e607",
+      "assembly": "AND &07"
+    },
+    {
+      "address": "4ED0",
+      "bytes": "87",
+      "assembly": "ADD A,A"
+    },
+    {
+      "address": "4ED1",
+      "bytes": "4f",
+      "assembly": "LD C,A"
+    },
+    {
+      "address": "4ED2",
+      "bytes": "87",
+      "assembly": "ADD A,A"
+    },
+    {
+      "address": "4ED3",
+      "bytes": "81",
+      "assembly": "ADD A,C"
+    },
+    {
+      "address": "4ED4",
+      "bytes": "ed44",
+      "assembly": "NEG"
+    },
+    {
+      "address": "4ED6",
+      "bytes": "c6bf",
+      "assembly": "ADD A,&BF"
+    },
+    {
+      "address": "4ED8",
+      "bytes": "fdbe07",
+      "assembly": "CP (IY+7)"
+    },
+    {
+      "address": "4EDB",
+      "bytes": "38db",
+      "assembly": "JR C,&4EB8"
+    },
+    {
+      "address": "4EDD",
+      "bytes": "2aee36",
+      "assembly": "LD HL,(&36EE)"
+    },
+    {
+      "address": "4EE0",
+      "bytes": "cdf62c",
+      "assembly": "CALL &2CF6"
+    },
+    {
+      "address": "4EE3",
+      "bytes": "3002",
+      "assembly": "JR NC,&4EE7"
+    },
+    {
+      "address": "4EE5",
+      "bytes": "280a",
+      "assembly": "JR Z,&4EF1"
+    },
+    {
+      "address": "4EE7",
+      "bytes": "cdb64f",
+      "assembly": "CALL &4FB6"
+    },
+    {
+      "address": "4EEA",
+      "bytes": "fdcb0bae",
+      "assembly": "RES 5,(IY+11)"
+    },
+    {
+      "address": "4EEE",
+      "bytes": "fd3407",
+      "assembly": "INC (IY+7)"
+    },
+    {
+      "address": "4EF1",
+      "bytes": "c3c74f",
+      "assembly": "JP &4FC7"
+    },
+    {
+      "address": "4F36",
+      "bytes": "cd2950",
+      "assembly": "CALL &5029"
+    },
+    {
+      "address": "4F39",
+      "bytes": "cd794f",
+      "assembly": "CALL &4F79"
+    },
+    {
+      "address": "4F3C",
+      "bytes": "3e18",
+      "assembly": "LD A,&18"
+    },
+    {
+      "address": "4F3E",
+      "bytes": "ba",
+      "assembly": "CP D"
+    },
+    {
+      "address": "4F3F",
+      "bytes": "380e",
+      "assembly": "JR C,&4F4F"
+    },
+    {
+      "address": "4F41",
+      "bytes": "bb",
+      "assembly": "CP E"
+    },
+    {
+      "address": "4F42",
+      "bytes": "da4f4f",
+      "assembly": "JP C,&4F4F"
+    },
+    {
+      "address": "4F45",
+      "bytes": "79",
+      "assembly": "LD A,C"
+    },
+    {
+      "address": "4F46",
+      "bytes": "cd0f44",
+      "assembly": "CALL &440F"
+    },
+    {
+      "address": "4F49",
+      "bytes": "fd7710",
+      "assembly": "LD (IY+16),A"
+    },
+    {
+      "address": "4F4C",
+      "bytes": "c3594e",
+      "assembly": "JP &4E59"
+    },
+    {
+      "address": "4F4F",
+      "bytes": "cddf4f",
+      "assembly": "CALL &4FDF"
+    },
+    {
+      "address": "4F52",
+      "bytes": "c3c74f",
+      "assembly": "JP &4FC7"
+    },
+    {
+      "address": "4F55",
+      "bytes": "cd794f",
+      "assembly": "CALL &4F79"
+    },
+    {
+      "address": "4F58",
+      "bytes": "7a",
+      "assembly": "LD A,D"
+    },
+    {
+      "address": "4F59",
+      "bytes": "bb",
+      "assembly": "CP E"
+    },
+    {
+      "address": "4F5A",
+      "bytes": "06f3",
+      "assembly": "LD B,&F3"
+    },
+    {
+      "address": "4F5C",
+      "bytes": "3803",
+      "assembly": "JR C,&4F61"
+    },
+    {
+      "address": "4F5E",
+      "bytes": "7b",
+      "assembly": "LD A,E"
+    },
+    {
+      "address": "4F5F",
+      "bytes": "06fc",
+      "assembly": "LD B,&FC"
+    },
+    {
+      "address": "4F61",
+      "bytes": "a7",
+      "assembly": "AND A"
+    },
+    {
+      "address": "4F62",
+      "bytes": "78",
+      "assembly": "LD A,B"
+    },
+    {
+      "address": "4F63",
+      "bytes": "2002",
+      "assembly": "JR NZ,&4F67"
+    },
+    {
+      "address": "4F65",
+      "bytes": "ee0f",
+      "assembly": "XOR &0F"
+    },
+    {
+      "address": "4F67",
+      "bytes": "b1",
+      "assembly": "OR C"
+    },
+    {
+      "address": "4F68",
+      "bytes": "cd0f44",
+      "assembly": "CALL &440F"
+    },
+    {
+      "address": "4F6B",
+      "bytes": "18be",
+      "assembly": "JR &4F2B"
+    },
+    {
+      "address": "4F6D",
+      "bytes": "cd794f",
+      "assembly": "CALL &4F79"
+    },
+    {
+      "address": "4F70",
+      "bytes": "ee0f",
+      "assembly": "XOR &0F"
+    },
+    {
+      "address": "4F72",
+      "bytes": "18f4",
+      "assembly": "JR &4F68"
+    },
+    {
+      "address": "4F74",
+      "bytes": "cd794f",
+      "assembly": "CALL &4F79"
+    },
+    {
+      "address": "4F77",
+      "bytes": "18ef",
+      "assembly": "JR &4F68"
+    },
+    {
+      "address": "4F79",
+      "bytes": "cd3b2b",
+      "assembly": "CALL &2B3B"
+    },
+    {
+      "address": "4F7C",
+      "bytes": "110500",
+      "assembly": "LD DE,&0005"
+    },
+    {
+      "address": "4F7F",
+      "bytes": "19",
+      "assembly": "ADD HL,DE"
+    },
+    {
+      "address": "4F80",
+      "bytes": "7e",
+      "assembly": "LD A,(HL)"
+    },
+    {
+      "address": "4F81",
+      "bytes": "23",
+      "assembly": "INC HL"
+    },
+    {
+      "address": "4F82",
+      "bytes": "66",
+      "assembly": "LD H,(HL)"
+    },
+    {
+      "address": "4F83",
+      "bytes": "6f",
+      "assembly": "LD L,A"
+    },
+    {
+      "address": "4F84",
+      "bytes": "0eff",
+      "assembly": "LD C,&FF"
+    },
+    {
+      "address": "4F86",
+      "bytes": "7c",
+      "assembly": "LD A,H"
+    },
+    {
+      "address": "4F87",
+      "bytes": "fd9606",
+      "assembly": "SUB (IY+6)"
+    },
+    {
+      "address": "4F8A",
+      "bytes": "57",
+      "assembly": "LD D,A"
+    },
+    {
+      "address": "4F8B",
+      "bytes": "280d",
+      "assembly": "JR Z,&4F9A"
+    },
+    {
+      "address": "4F8D",
+      "bytes": "3004",
+      "assembly": "JR NC,&4F93"
+    },
+    {
+      "address": "4F8F",
+      "bytes": "ed44",
+      "assembly": "NEG"
+    },
+    {
+      "address": "4F91",
+      "bytes": "57",
+      "assembly": "LD D,A"
+    },
+    {
+      "address": "4F92",
+      "bytes": "37",
+      "assembly": "SCF"
+    },
+    {
+      "address": "4F93",
+      "bytes": "f5",
+      "assembly": "PUSH AF"
+    },
+    {
+      "address": "4F94",
+      "bytes": "cb11",
+      "assembly": "RL C"
+    },
+    {
+      "address": "4F96",
+      "bytes": "f1",
+      "assembly": "POP AF"
+    },
+    {
+      "address": "4F97",
+      "bytes": "3f",
+      "assembly": "CCF"
+    },
+    {
+      "address": "4F98",
+      "bytes": "cb11",
+      "assembly": "RL C"
+    },
+    {
+      "address": "4F9A",
+      "bytes": "fd7e05",
+      "assembly": "LD A,(IY+5)"
+    },
+    {
+      "address": "4F9D",
+      "bytes": "95",
+      "assembly": "SUB L"
+    },
+    {
+      "address": "4F9E",
+      "bytes": "5f",
+      "assembly": "LD E,A"
+    },
+    {
+      "address": "4F9F",
+      "bytes": "280f",
+      "assembly": "JR Z,&4FB0"
+    },
+    {
+      "address": "4FA1",
+      "bytes": "3004",
+      "assembly": "JR NC,&4FA7"
+    },
+    {
+      "address": "4FA3",
+      "bytes": "ed44",
+      "assembly": "NEG"
+    },
+    {
+      "address": "4FA5",
+      "bytes": "5f",
+      "assembly": "LD E,A"
+    },
+    {
+      "address": "4FA6",
+      "bytes": "37",
+      "assembly": "SCF"
+    },
+    {
+      "address": "4FA7",
+      "bytes": "f5",
+      "assembly": "PUSH AF"
+    },
+    {
+      "address": "4FA8",
+      "bytes": "cb11",
+      "assembly": "RL C"
+    },
+    {
+      "address": "4FAA",
+      "bytes": "f1",
+      "assembly": "POP AF"
+    },
+    {
+      "address": "4FAB",
+      "bytes": "3f",
+      "assembly": "CCF"
+    },
+    {
+      "address": "4FAC",
+      "bytes": "cb11",
+      "assembly": "RL C"
+    },
+    {
+      "address": "4FAE",
+      "bytes": "79",
+      "assembly": "LD A,C"
+    },
+    {
+      "address": "4FAF",
+      "bytes": "c9",
+      "assembly": "RET"
+    },
+    {
+      "address": "4FB0",
+      "bytes": "cb01",
+      "assembly": "RLC C"
+    },
+    {
+      "address": "4FB2",
+      "bytes": "cb01",
+      "assembly": "RLC C"
+    },
+    {
+      "address": "4FB4",
+      "bytes": "79",
+      "assembly": "LD A,C"
+    },
+    {
+      "address": "4FB5",
+      "bytes": "c9",
+      "assembly": "RET"
+    }
+  ],
+  "verticalPuzzle": {
+    "lower": "6160",
+    "upper": "6150",
+    "upperFloor": 7,
+    "lift": [
+      {
+        "type": 4,
+        "sprite": 69,
+        "x": 6,
+        "y": 3,
+        "z": 7,
+        "flip": false,
+        "behavior": 23,
+        "flags": 0,
+        "descriptor": [
+          158,
+          23,
+          0
+        ],
+        "animation": [
+          68,
+          69,
+          197,
+          196
+        ],
+        "secondarySprite": -1,
+        "secondaryAnimation": [],
+        "collider": {
+          "minX": -0.375,
+          "maxX": 0.375,
+          "minY": -0.375,
+          "maxY": 0.375,
+          "height": 1
+        },
+        "behaviorAddress": 19758
+      }
+    ]
+  },
+  "validatedFidelity": false
+}

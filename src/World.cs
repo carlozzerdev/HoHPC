@@ -35,7 +35,7 @@ public sealed class PickupState(PickupData data)
     public bool Collected=data.CollectedBit;
     public int Frame;
     public int Sprite=>Data.Animation.Length==0?Data.InitialSprite:Data.Animation[Frame%Data.Animation.Length];
-    public float Height=>7-Data.Z;
+    public float Height=7-data.Z;
 }
 public sealed class RoomData
 {
@@ -110,11 +110,17 @@ public sealed class Entity(ObjectData source)
     public int AnimationFrame=1;
     public bool Frozen;
     public int Direction,Behavior=source.Behavior;
+    public int BehaviorState,BehaviorTimer;
+    public int? SpriteOverride;
+    public int SpringFrame=-1;
     public bool Moved;
     public int RuntimeFlags => ((Source.Flags&0x60)==0x60?Source.Flags&~0x40:Source.Flags)&~0x84;
     public bool Dangerous => (RuntimeFlags&0x20)!=0&&(RuntimeFlags&0x40)==0;
     public bool Carryable => (RuntimeFlags&0x40)!=0;
-    public int Sprite => Source.Animation.Length==0?Source.Sprite:Source.Animation[AnimationFrame%Source.Animation.Length];
+    // 4DDC/4FEF consume contact direction; 4D98 (spring) and idle 4C86
+    // reach that same path. This is independent of the bag's flag 40.
+    public bool Pushable => !Removed&&!Frozen&&Behavior is 1 or 10 or 28;
+    public int Sprite => SpriteOverride??(Source.Animation.Length==0?Source.Sprite:Source.Animation[AnimationFrame%Source.Animation.Length]);
 }
 public sealed class Character(int room, bool head)
 {

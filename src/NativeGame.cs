@@ -29,6 +29,12 @@ public sealed partial class NativeGame
     readonly HashSet<int> visited=[];
     float accumulator;
     bool jumpRequested;
+    bool walkingSound;
+    void SetWalkingSound(bool walking)
+    {
+        if(walkingSound&&!walking)Sound?.Invoke(SoundCue.StopStep);
+        walkingSound=walking;
+    }
     int damageMask;
     static readonly (int x,int y)[] vectors=[(-1,0),(-1,-1),(0,-1),(1,-1),(1,0),(1,1),(0,1),(-1,1)];
     public NativeGame(WorldData data)
@@ -74,6 +80,7 @@ public sealed partial class NativeGame
     }
     void Tick(float dx,float dy)
     {
+        pushedThisTick.Clear();
         Ticks++;var p=Player;
         if(Ticks%3==0)
         {
@@ -82,12 +89,14 @@ public sealed partial class NativeGame
         }
         if(p.DamageTicks>0)
         {
+            SetWalkingSound(false);
             p.DamageTicks--;
             if(p.DamageTicks==0)Respawn(p);
             jumpRequested=false;return;
         }
         if(TeleportTicks>0)
         {
+            SetWalkingSound(false);
             if(--TeleportTicks==0&&!TeleportArriving)
             {
                 p.Room=teleportDestination;visited.Add(p.Room);TeleportArriving=true;TeleportTicks=8;
@@ -101,20 +110,27 @@ public sealed partial class NativeGame
                 if(!e.Removed&&!e.Frozen&&e.Source.Animation.Length>1)e.AnimationFrame++;
             foreach(var pickup in r.Pickups)if(!pickup.Collected)pickup.Frame++;
         }
-        if(p.Lives==0){jumpRequested=false;return;}
+        if(p.Lives==0){SetWalkingSound(false);jumpRequested=false;return;}
         var room=Rooms[p.Room];
         StepObjects(room);
+        StepPickups(room);
         StepProjectiles(room);
         if(jumpRequested&&p.Grounded)
         {
-            if(TryTeleport(room,p)){jumpRequested=false;return;}
+            if(TryTeleport(room,p)){SetWalkingSound(false);jumpRequested=false;return;}
             Sound?.Invoke(SoundCue.Jump);
-            p.JumpTicks=(p.IsHead||Joined)?8:4;
-            if(!p.IsHead&&!Joined&&p.LongJumps>0){p.JumpTicks=8;p.LongJumps--;}
+            // 2A41–2A6F: spring adds one level; Head/bonus adds another.
+            // The combined 12-tick result is explicitly capped at ten.
+            int boost=room.Entities.Any(e=>IsSolid(e)&&(e.Sprite&127) is 43 or 44&&
+                OverlapXY(e,p.X,p.Y)&&Math.Abs(p.Height-e.Height-e.Source.Collider.Height)<.001f)?1:0;
+            if(p.IsHead||Joined)boost++;
+            else if(p.LongJumps>0){boost++;p.LongJumps--;}
+            p.JumpTicks=Math.Min(10,4+4*boost);
             p.Grounded=false;
         }
         jumpRequested=false;
         int direction=Array.FindIndex(vectors,v=>v.x==Math.Sign(dx)&&v.y==Math.Sign(dy));
+        bool walked=false;
         if(direction>=0)
         {
             if(direction!=p.PreviousDirection)p.TurnDelay=2;
@@ -125,17 +141,19 @@ public sealed partial class NativeGame
             for(int s=0;s<steps;s++)
                 if(TryMove(room,p,v.x/8f,v.y/8f)) {
                     p.Frame=(p.Frame+1)%4;
-                    if(s==0&&p.Grounded&&Ticks%2==0)Sound?.Invoke(SoundCue.Step);
+                    if(s==0&&p.Grounded){Sound?.Invoke(SoundCue.Step);walked=true;}
                 }
             p.PreviousDirection=direction;
             if(p.IsHead&&p.FastSteps>0)p.FastSteps--;
         }
         else {p.PreviousDirection=-1;p.TurnDelay=2;}
+        SetWalkingSound(walked);
         Vertical(room,p);
         Collect(room,p);
         if(room.Entities.Any(e=>!e.Removed&&e.Dangerous&&OverlapXY(e,p.X,p.Y)&&p.Height<e.Height+e.Source.Collider.Height&&p.Height+BodyHeight>e.Height))
             Damage(p);
         CheckBoundary(p);
+        CheckVerticalBoundary(p);
         if(Joined)SyncJoined();
     }
     bool TryTeleport(RoomState room,Character p)
@@ -227,14 +245,16 @@ public sealed partial class NativeGame
         foreach(var pickup in room.Pickups)
         {
             var d=pickup.Data;
-            if(pickup.Collected||!d.Collectible||Math.Abs(p.X-d.X)>.65f||Math.Abs(p.Y-d.Y)>.65f||Math.Abs(p.Height-pickup.Height)>.5f)continue;
-            if(d.Kind==0&&p.IsHead&&!Joined)continue;
-            if((d.Kind==1||d.Kind==2||d.Kind==3)&&!p.IsHead&&!Joined)continue;
+            if(pickup.Collected||!d.Collectible||Math.Abs(p.X-d.X)>=.75f||Math.Abs(p.Y-d.Y)>=.75f||
+                p.Height>pickup.Height+1+.0001f||p.Height+BodyHeight<pickup.Height-.0001f)continue;
+            // 3FA5 grants the shared bag/hooter flags without a character check.
+            // Ammunition and speed bonus have the separate 3FB4/3FC3 restriction.
+            if((d.Kind==2||d.Kind==3)&&!p.IsHead&&!Joined)continue;
             if(d.Kind==4&&p.IsHead&&!Joined)continue;
             switch(d.Kind)
             {
-                case 0:HasBag=true;Notice="Bolsa recogida por Heels";break;
-                case 1:HasHooter=true;Notice="Bocina recogida por Head";break;
+                case 0:HasBag=true;Notice="Bolsa recogida: la usa Heels con E";break;
+                case 1:HasHooter=true;Notice="Bocina recogida: Head dispara con F y munición";break;
                 case 2:Ammunition=Math.Min(99,Ammunition+6);Notice="6 disparos";break;
                 case 3:Characters[0].FastSteps=99;Notice="Pasos rápidos";break;
                 case 4:Characters[1].LongJumps=Math.Min(99,Characters[1].LongJumps+10);Notice="Saltos largos";break;
@@ -244,7 +264,7 @@ public sealed partial class NativeGame
                 case >=9 and <=13:CrownMask|=1<<(d.Kind-9);Notice=Won?"Las cinco coronas recuperadas":"Corona recuperada";break;
                 default:continue;
             }
-            pickup.Collected=true;Sound?.Invoke(SoundCue.Pickup);
+            pickup.Collected=true;Sound?.Invoke(d.Kind is 0 or 1 or 2?SoundCue.PickupEquipment:SoundCue.Pickup);
         }
     }
     bool IsSolid(Entity e)=>!e.Removed;
@@ -263,11 +283,6 @@ public sealed partial class NativeGame
     bool TryMove(RoomState room,Character p,float dx,float dy)
     {
         float x=p.X+dx,y=p.Y+dy;
-        if(Blocked(room,x,y,p.Height))
-        {
-            if(room.Entities.Any(e=>!e.Removed&&e.Dangerous&&OverlapXY(e,x,y)&&p.Height<e.Height+e.Source.Collider.Height&&p.Height+BodyHeight>e.Height))Damage(p);
-            return false;
-        }
         // Wall contacts allow movement only through an actual doorway aperture.
         var b=room.Data.Bounds;
         float minX=(b[0]-9)/8f,maxX=(b[2]-15)/8f,minY=(b[1]-9)/8f,maxY=(b[3]-15)/8f;
@@ -275,6 +290,11 @@ public sealed partial class NativeGame
         if(x>maxX&&!Doorway(room.Data,p,1,y))return false;
         if(y<minY&&!Doorway(room.Data,p,2,x))return false;
         if(y>maxY&&!Doorway(room.Data,p,0,x))return false;
+        if(Blocked(room,x,y,p.Height))
+        {
+            if(room.Entities.Any(e=>!e.Removed&&e.Dangerous&&OverlapXY(e,x,y)&&p.Height<e.Height+e.Source.Collider.Height&&p.Height+BodyHeight>e.Height))Damage(p);
+            if(!TryPush(room,p,dx,dy))return false;
+        }
         p.X=x;p.Y=y;return true;
     }
     static bool Doorway(RoomData r,Character p,int side,float along)
@@ -293,7 +313,7 @@ public sealed partial class NativeGame
             p.Grounded=false;return;
         }
         bool wasGrounded=p.Grounded;
-        float support=0;
+        float support=HasFloor(room.Data)?0:float.NegativeInfinity;
         foreach(var e in room.Entities.Where(IsSolid))
             if(OverlapXY(e,p.X,p.Y)&&e.Height+e.Source.Collider.Height<=p.Height+.0001f)
                 support=Math.Max(support,e.Height+e.Source.Collider.Height);

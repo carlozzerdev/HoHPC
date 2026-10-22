@@ -12,9 +12,15 @@ public sealed partial class NativeGame
         {
             if(e.Removed||e.Frozen)continue;
             int behavior=e.Behavior;
+            if(behavior is 18 or 23){e.BehaviorState=behavior==18?0x52:0x90;e.Behavior=16;continue;}
+            if(behavior==16){StepLift(room,e);continue;}
+            if(behavior==28)StepSpring(room,e);
             if(behavior is >=2 and <=5){e.Behavior=0;continue;}
             bool mover=behavior is >=6 and <=9 or >=11 and <=13 or 15 or 21 or 22 or 33 or 37;
-            if(behavior!=1&&!mover)continue;
+            if(behavior is not (1 or 10 or 28)&&!mover)continue;
+            // 4E65 draws the periodic random value before its gravity path.
+            bool periodic=behavior is 9 or 12 or 13;
+            if(periodic&&(random.NextUInt16()&15)==0)ChooseDirection(e,behavior);
             if(behavior is not (21 or 22)&&FallObject(room,e))continue;
             if(!mover)continue;
             bool near=Player.Room==room.Data.Id;
@@ -23,16 +29,16 @@ public sealed partial class NativeGame
             {
                 if(!near)continue;
                 int dx=Math.Sign(Player.X-e.X),dy=Math.Sign(Player.Y-e.Y);
-                if(behavior is 15 or 33)
+                if(behavior==15)
                 {
-                    if(Math.Abs(Player.Y-e.Y)>=Math.Abs(Player.X-e.X))dx=0;else dy=0;
+                    // 4F55 selects the shorter nonzero axis; ties prefer X.
+                    bool moveY=Math.Abs(Player.Y-e.Y)<Math.Abs(Player.X-e.X)?dy!=0:dx==0;
+                    if(moveY)dx=0;else dy=0;
                 }
                 if(behavior==37&&(CrownMask&15)==15){dx=-dx;dy=-dy;}
                 int dir=Array.FindIndex(vectors,v=>v.x==dx&&v.y==dy);
                 if(dir<0)continue;e.Direction=dir;
             }
-            bool periodic=behavior is 9 or 12 or 13;
-            if(periodic&&(random.NextUInt16()&15)==0)ChooseDirection(e,behavior);
             var vector=vectors[e.Direction];
             if(!MoveObject(room,e,vector.x/8f,vector.y/8f))ChooseDirection(e,behavior);
         }
@@ -61,11 +67,21 @@ public sealed partial class NativeGame
             y+ac.MaxY>b.Y+bc.MinY+.0001f&&y+ac.MinY<b.Y+bc.MaxY-.0001f&&
             z+ac.Height>b.Height+.0001f&&z<b.Height+bc.Height-.0001f;
     }
+    bool ObjectHitsCharacter(Entity e,float x,float y,float z,Character p)
+    {
+        if(Joined&&p.IsHead)return false; // Included in the joined player's height.
+        var c=e.Source.Collider;
+        float height=Joined&&p==Player?2:1;
+        return x+c.MaxX>p.X-.375f+.0001f&&x+c.MinX<p.X+.375f-.0001f&&
+            y+c.MaxY>p.Y-.375f+.0001f&&y+c.MinY<p.Y+.375f-.0001f&&
+            z+c.Height>p.Height+.0001f&&z<p.Height+height-.0001f;
+    }
     bool FallObject(RoomState room,Entity e)
     {
         if(e.Height<=0)return false;
         float height=Math.Max(0,e.Height-1/6f);
         if(room.Entities.Any(o=>o!=e&&!o.Removed&&BodiesOverlap(e,e.X,e.Y,height,o)))return false;
+        if(Characters.Any(p=>p.Room==room.Data.Id&&ObjectHitsCharacter(e,e.X,e.Y,height,p)))return false;
         e.Height=height;return true;
     }
     bool MoveObject(RoomState room,Entity e,float dx,float dy)

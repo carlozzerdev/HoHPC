@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "roomsRendered": 301,
+  "spritesDecoded": 100,
+  "nativeJumpAndLanding": true,
+  "independentCharacters": true,
+  "z80RuleChecks": 50,
+  "pickupsRecovered": 52,
+  "nativeRuntime": true,
+  "doorLinksValidated": 482,
+  "teleportPairsRecovered": 22,
+  "fidelityValidated": false,
+  "completeGame": false
+}

@@ -1,0 +1,46 @@
+BINSPY - INFORME DE ANÁLISIS
+Estado: completo
+Entrada: C:\ia\HoH26\analysis\with-headers\HEAD.BI1
+Tamaño original: 40832 bytes
+SHA-256: 8DE5C67480754434F6A28D023D4F31E9B01FFD078D5DF5CEC1A687B0717EF190
+Fecha UTC: 2026-10-21T20:59:05.3421525+00:00
+Rango físico: 0x80 + 40704 bytes
+Origen Z80: &0100
+Entropía: 7.187 bits/byte
+ASCII/control imprimible: 30,2 %
+Todos los offsets son absolutos respecto al archivo de entrada, incluida su cabecera.
+CONFIRMACIÓN: una estructura reconocida valida un formato; una interpretación solo propone una vista.
+
+RESULTADOS
+[cabecera / checksum válido] 0x00000000, 128 bytes: AMSDOS tipo 2, carga &0100, ejecución &0100, longitud 40704.
+[texto / heurística ASCII] 0x00000080, 40704 bytes: 181 cadenas imprimibles de al menos 5 caracteres; pueden ser coincidencias. No convierte glifos CPC extendidos. -> textos.tsv
+[Z80 / interpretación] 0x00000080, 40704 bytes: Desensamblado lineal; los datos también producen instrucciones. No prueba que haya código ni recupera el fuente original. -> z80.asm
+[audio / sin formato reconocido] 0x00000080, 40704 bytes: No se encontraron contenedores YM2/3/3b/5/6 sin compresión o RIFF/WAVE válidos. Las rutinas AY, pistas tracker y muestras sin cabecera pueden seguir presentes.
+[imagen / candidato] 0x00000080, 16336 bytes: Pantalla CPC estándar 320x200, modo 1, entrelazado de memoria de 8 líneas; paleta ilustrativa, no recuperada: 0,26,6,18,2,24,8,20,10,12,14,16,4,22,1,25. Sin detección de CRTC ni dirección de pantalla. -> graficos/pantalla_00000080_modo1.bmp
+[imagen / candidato] 0x00004080, 16336 bytes: Pantalla CPC estándar 320x200, modo 1, entrelazado de memoria de 8 líneas; paleta ilustrativa, no recuperada: 0,26,6,18,2,24,8,20,10,12,14,16,4,22,1,25. Sin detección de CRTC ni dirección de pantalla. -> graficos/pantalla_00004080_modo1.bmp
+[sprites / interpretación] 0x00000080, 4096 bytes: 64 bloques lineales de 16x16, modo 1; sin máscaras; paleta ilustrativa, no recuperada: 0,26,6,18,2,24,8,20,10,12,14,16,4,22,1,25. Dimensiones supuestas. No demuestra que sean sprites. -> sprites/atlas_modo1_000.bmp
+[sprites / interpretación] 0x00001080, 4096 bytes: 64 bloques lineales de 16x16, modo 1; sin máscaras; paleta ilustrativa, no recuperada: 0,26,6,18,2,24,8,20,10,12,14,16,4,22,1,25. Dimensiones supuestas. No demuestra que sean sprites. -> sprites/atlas_modo1_001.bmp
+[sprites / interpretación] 0x00002080, 4096 bytes: 64 bloques lineales de 16x16, modo 1; sin máscaras; paleta ilustrativa, no recuperada: 0,26,6,18,2,24,8,20,10,12,14,16,4,22,1,25. Dimensiones supuestas. No demuestra que sean sprites. -> sprites/atlas_modo1_002.bmp
+[sprites / interpretación] 0x00003080, 4096 bytes: 64 bloques lineales de 16x16, modo 1; sin máscaras; paleta ilustrativa, no recuperada: 0,26,6,18,2,24,8,20,10,12,14,16,4,22,1,25. Dimensiones supuestas. No demuestra que sean sprites. -> sprites/atlas_modo1_003.bmp
+
+AVISOS Y LÍMITES
+- Atlas modo 1: 256 de 636 bloques representados; ajusta --offset o --max-sprites para explorar el resto.
+- Los gráficos usan paleta y geometría supuestas salvo parámetros explícitos; no se detectan automáticamente máscaras, compresión, raster effects ni sprites compilados.
+- La música de juegos suele ser código Z80 con datos propios del reproductor. No se emula ni se convierte automáticamente a audio; solo se extraen formatos soportados. No reconocer un formato no demuestra ausencia de recursos.
+
+ARCHIVOS GENERADOS (informes excluidos de hashes)
+contenido.bin | 40704 bytes | SHA-256 FF48C191FDEAE0406BF19DA3FAB6EAE34246523144CD0F958F90FBF47628E633
+cabecera.bin | 128 bytes | SHA-256 A285175F1BFEB1CEBB0A50D9BABC3CF8C0546F3B814407D42403602888ECDA8E
+textos.tsv | 4086 bytes | SHA-256 A68ACCAD04503A19A4F00ED807F10A2406F6894B6FC1B0A32693A0CCAC8A0C23
+hexadecimal.txt | 195919 bytes | SHA-256 FC4AC47A75EF2FF8E9DC829FF7FE9C733D7854B731D47B4F87CD32E40F45D103
+z80.asm | 2025675 bytes | SHA-256 430D3188070B5FCFC195876EB5C1E5CB47A7D3FC408223A4028C18355328BFD0
+graficos/pantalla_00000080_modo1.bmp | 192054 bytes | SHA-256 B1641B19B0E60F5CDAF7528D282C1933EF92190DF217E647C0596FAF85319173
+graficos/pantalla_00004080_modo1.bmp | 192054 bytes | SHA-256 6BFC458352048A85DCCE729452FA987807C6D25AF730D2F2DD381F135A6D1DF1
+sprites/atlas_modo1_000.bmp | 55542 bytes | SHA-256 1F3EFB3CFD7799AEF6218FE99904C8B3B2651114474B5046038DA6FBFC4F32B1
+sprites/atlas_modo1_001.bmp | 55542 bytes | SHA-256 DB929405EB30F0981DF8A8A9FC782067BED303F699AD7FE901D390021C69A472
+sprites/atlas_modo1_002.bmp | 55542 bytes | SHA-256 36C3064D77B09570457A09467E522C382983190E0E03DF0D1EA76CD6872D67A0
+sprites/atlas_modo1_003.bmp | 55542 bytes | SHA-256 2CB2CAB6E0B33382881033201788B7ED333314CEB1784B5AE0D802EFB93CF1FC
+sprites/mapa_modo1.tsv | 13059 bytes | SHA-256 646FC5C3964ECC6A0BCCFE429EBDA1D456980AF49C1B0C381B6363CE47E76215
+sprites/bloques_modo1.bin | 16384 bytes | SHA-256 8E0CB81B52AF4303FC34F1A073D6B67D179360C9D7AF11A6A19395517EAB71AD
+
+Parámetros reproducibles: consultar Parameters en informe.json.

@@ -1,0 +1,183 @@
+{
+  "Tool": "binspy 1.0",
+  "Input": "C:\\ia\\HoH26\\analysis\\extracted\\HEAD",
+  "InputBytes": 890,
+  "Sha256": "CD1692D06616FBFD0EFE33971CE2914AED5FD7BFDA96EB6F9079B455EA8F6F68",
+  "CreatedUtc": "2026-10-21T20:57:58.0416932+00:00",
+  "Header": null,
+  "FileOffset": 0,
+  "AnalyzedBytes": 890,
+  "Origin": 0,
+  "Entropy": 5.522028117952427,
+  "PrintableFraction": 0.5573033707865168,
+  "Parameters": {
+    "Input": "C:\\ia\\HoH26\\analysis\\extracted\\HEAD",
+    "Output": "C:\\ia\\HoH26\\analysis\\loader",
+    "Header": "auto",
+    "Offset": 0,
+    "Length": null,
+    "Origin": null,
+    "Mode": null,
+    "MinText": 5,
+    "SpriteWidth": 16,
+    "SpriteHeight": 16,
+    "CustomSprite": false,
+    "MaxSprites": 64,
+    "PcmRate": null,
+    "Palette": [
+      0,
+      26,
+      6,
+      18,
+      2,
+      24,
+      8,
+      20,
+      10,
+      12,
+      14,
+      16,
+      4,
+      22,
+      1,
+      25
+    ],
+    "CustomPalette": false
+  },
+  "Status": "completo",
+  "Warnings": [
+    "Sin cabecera AMSDOS utilizada: el relleno de registros CP/M, si existe, no se elimina autom\u00E1ticamente.",
+    "Los gr\u00E1ficos usan paleta y geometr\u00EDa supuestas salvo par\u00E1metros expl\u00EDcitos; no se detectan autom\u00E1ticamente m\u00E1scaras, compresi\u00F3n, raster effects ni sprites compilados.",
+    "La m\u00FAsica de juegos suele ser c\u00F3digo Z80 con datos propios del reproductor. No se emula ni se convierte autom\u00E1ticamente a audio; solo se extraen formatos soportados. No reconocer un formato no demuestra ausencia de recursos."
+  ],
+  "Findings": [
+    {
+      "Category": "texto",
+      "Confidence": "heur\u00EDstica ASCII",
+      "Offset": 0,
+      "Length": 890,
+      "Description": "12 cadenas imprimibles de al menos 5 caracteres; pueden ser coincidencias. No convierte glifos CPC extendidos.",
+      "Artifact": "textos.tsv"
+    },
+    {
+      "Category": "BASIC",
+      "Confidence": "estructura compatible",
+      "Offset": 0,
+      "Length": 890,
+      "Description": "Programa tokenizado Locomotive BASIC; no se ha ejecutado.",
+      "Artifact": "basic.txt"
+    },
+    {
+      "Category": "Z80",
+      "Confidence": "interpretaci\u00F3n",
+      "Offset": 0,
+      "Length": 890,
+      "Description": "Desensamblado lineal; los datos tambi\u00E9n producen instrucciones. No prueba que haya c\u00F3digo ni recupera el fuente original.",
+      "Artifact": "z80.asm"
+    },
+    {
+      "Category": "audio",
+      "Confidence": "sin formato reconocido",
+      "Offset": 0,
+      "Length": 890,
+      "Description": "No se encontraron contenedores YM2/3/3b/5/6 sin compresi\u00F3n o RIFF/WAVE v\u00E1lidos. Las rutinas AY, pistas tracker y muestras sin cabecera pueden seguir presentes.",
+      "Artifact": null
+    },
+    {
+      "Category": "sprites",
+      "Confidence": "interpretaci\u00F3n",
+      "Offset": 0,
+      "Length": 768,
+      "Description": "6 bloques lineales de 16x16, modo 0; sin m\u00E1scaras; paleta ilustrativa, no recuperada: 0,26,6,18,2,24,8,20,10,12,14,16,4,22,1,25. Dimensiones supuestas. No demuestra que sean sprites.",
+      "Artifact": "sprites/atlas_modo0_000.bmp"
+    },
+    {
+      "Category": "sprites",
+      "Confidence": "interpretaci\u00F3n",
+      "Offset": 0,
+      "Length": 832,
+      "Description": "13 bloques lineales de 16x16, modo 1; sin m\u00E1scaras; paleta ilustrativa, no recuperada: 0,26,6,18,2,24,8,20,10,12,14,16,4,22,1,25. Dimensiones supuestas. No demuestra que sean sprites.",
+      "Artifact": "sprites/atlas_modo1_000.bmp"
+    },
+    {
+      "Category": "sprites",
+      "Confidence": "interpretaci\u00F3n",
+      "Offset": 0,
+      "Length": 864,
+      "Description": "27 bloques lineales de 16x16, modo 2; sin m\u00E1scaras; paleta ilustrativa, no recuperada: 0,26,6,18,2,24,8,20,10,12,14,16,4,22,1,25. Dimensiones supuestas. No demuestra que sean sprites.",
+      "Artifact": "sprites/atlas_modo2_000.bmp"
+    }
+  ],
+  "Artifacts": [
+    {
+      "Path": "contenido.bin",
+      "Bytes": 890,
+      "Sha256": "CD1692D06616FBFD0EFE33971CE2914AED5FD7BFDA96EB6F9079B455EA8F6F68"
+    },
+    {
+      "Path": "textos.tsv",
+      "Bytes": 527,
+      "Sha256": "B4DBB89C0D19814364397D89AC4744E631494C90B9A98BC77AC6B4B039341002"
+    },
+    {
+      "Path": "hexadecimal.txt",
+      "Bytes": 4337,
+      "Sha256": "6A63E08661CA84C3F18C62A6B90889E3607DD942A53A5EE55569F8CA40370D65"
+    },
+    {
+      "Path": "basic.txt",
+      "Bytes": 1048,
+      "Sha256": "F364FD3817E9A3521F6E5E6E62C3A454A303A664B6EECE90898FBD273B90EE5A"
+    },
+    {
+      "Path": "z80.asm",
+      "Bytes": 44956,
+      "Sha256": "7F88BD09D47EBF2C2154072D15527D85360020D9D28335562FB8DE93ADDFB467"
+    },
+    {
+      "Path": "sprites/atlas_modo0_000.bmp",
+      "Bytes": 5290,
+      "Sha256": "3FD31C17D837AD4299C13A280000563C3F358D269EBC98749610ABF0ED127E71"
+    },
+    {
+      "Path": "sprites/mapa_modo0.tsv",
+      "Bytes": 342,
+      "Sha256": "F20B6394AD57FE82B15BEF1CF31F641F679989065A5332B756D991ED5A96F22C"
+    },
+    {
+      "Path": "sprites/bloques_modo0.bin",
+      "Bytes": 768,
+      "Sha256": "5C767449731C78540831EF1A20ECED659551BB70E64FC19791467BCD198B54C7"
+    },
+    {
+      "Path": "sprites/atlas_modo1_000.bmp",
+      "Bytes": 13926,
+      "Sha256": "A1DCD004CA4D773DCEDADE8B8EE0EA7238F9B43AFF0A415BF897F74A4AFEAE44"
+    },
+    {
+      "Path": "sprites/mapa_modo1.tsv",
+      "Bytes": 681,
+      "Sha256": "13A48FEA7CD2923F8BBE936AC982623F50AB3886CB2E7047EA5A69F0E09537B8"
+    },
+    {
+      "Path": "sprites/bloques_modo1.bin",
+      "Bytes": 832,
+      "Sha256": "5CC38EA1A73BA77A0369ABA06097BA3F366B4B4075D6BB0A16FF3EFCDDA1308C"
+    },
+    {
+      "Path": "sprites/atlas_modo2_000.bmp",
+      "Bytes": 27798,
+      "Sha256": "9CF0323836F09E896EE491F7B3CD1C8FB766A6E7C7C8832F4734E3485F5F6AA8"
+    },
+    {
+      "Path": "sprites/mapa_modo2.tsv",
+      "Bytes": 1383,
+      "Sha256": "7DCD12E8E0AAD8BA51F20A2EBF697D5A1A819D2840B7C1E986EAD849F38C24B9"
+    },
+    {
+      "Path": "sprites/bloques_modo2.bin",
+      "Bytes": 864,
+      "Sha256": "C25EF2049F420E138F78F80837BBC2A35201B0B55534F2765134E73FA3CF584F"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+10 MODE 1:BORDER 0:INK 0,0:INK 1,26:OPENOUT"d":MEMORY &5FF
+20 LOCATE 10,10:INPUT"Grande vitesse (o/n)";vi$
+30 LOCATE 8,12:INPUT"Equipement complet (o/n)";eq$
+40 LOCATE 10,14:INPUT"Tirs infinis  (o/n)";ti$ 
+50 LOCATE 10,16:INPUT"Invulnerable (o/n)";i$
+60 IF i$="o" OR i$="O" THEN 80
+70 LOCATE 10,18:INPUT"Vies infinies (o/n)";v$
+80 MODE 0:FOR i=0 TO 15:READ a:INK i,a:NEXT
+90 LOAD"!headima.pow":CALL &8C00
+100 DATA 0,13,26,24,25,9,15,11,20,1,2,6,3,8,7,4
+110 OUT &7F00,&C4:LOAD"head.bi2",&4000:OUT &7F00,&C0
+120 LOAD"!head.bi1",&600
+130 IF vi$="o" OR vi$="O" THEN POKE &63E,0:POKE &63F,0:POKE &640,0
+140 IF eq$="o" OR eq$="O" THEN POKE &2972,&FF
+150 IF ti$="o" OR ti$="O" THEN POKE &2B32,&18
+160 IF i$="o" OR i$="O" THEN POKE &4C45,&C9
+170 IF v$="o" OR v$="O" THEN POKE &2BC5,0
+180 FOR n=&BE80 TO &BEA3:READ a$:a=VAL("&"+a$):POKE n,a:NEXT
+190 MODE 0:FOR n=0 TO 15:INK n,0:NEXT
+200 DATA f3,21,00,06,11,00,01,01,00,9f,ed,b0,01,c4,7f,ed
+210 DATA 49,21,00,40,11,00,a0,01,c0,0d,ed,b0,01,c0,7f,ed
+220 DATA 49,c3,00,01
+230 CALL &BE80

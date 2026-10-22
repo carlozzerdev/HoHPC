@@ -1,0 +1,14 @@
+indice	offset_archivo	bytes	atlas	x	y	ancho	alto
+0	0x00000000	64	atlas_modo1_000.bmp	0	0	16	16
+1	0x00000040	64	atlas_modo1_000.bmp	17	0	16	16
+2	0x00000080	64	atlas_modo1_000.bmp	34	0	16	16
+3	0x000000C0	64	atlas_modo1_000.bmp	51	0	16	16
+4	0x00000100	64	atlas_modo1_000.bmp	68	0	16	16
+5	0x00000140	64	atlas_modo1_000.bmp	85	0	16	16
+6	0x00000180	64	atlas_modo1_000.bmp	102	0	16	16
+7	0x000001C0	64	atlas_modo1_000.bmp	119	0	16	16
+8	0x00000200	64	atlas_modo1_000.bmp	0	17	16	16
+9	0x00000240	64	atlas_modo1_000.bmp	17	17	16	16
+10	0x00000280	64	atlas_modo1_000.bmp	34	17	16	16
+11	0x000002C0	64	atlas_modo1_000.bmp	51	17	16	16
+12	0x00000300	64	atlas_modo1_000.bmp	68	17	16	16

@@ -1,0 +1,44 @@
+BINSPY - INFORME DE ANÁLISIS
+Estado: completo
+Entrada: C:\ia\HoH26\analysis\extracted\HEAD
+Tamaño original: 890 bytes
+SHA-256: CD1692D06616FBFD0EFE33971CE2914AED5FD7BFDA96EB6F9079B455EA8F6F68
+Fecha UTC: 2026-10-21T20:57:58.0416932+00:00
+Rango físico: 0x0 + 890 bytes
+Origen Z80: &0000
+Entropía: 5.522 bits/byte
+ASCII/control imprimible: 55,7 %
+Todos los offsets son absolutos respecto al archivo de entrada, incluida su cabecera.
+CONFIRMACIÓN: una estructura reconocida valida un formato; una interpretación solo propone una vista.
+
+RESULTADOS
+[texto / heurística ASCII] 0x00000000, 890 bytes: 12 cadenas imprimibles de al menos 5 caracteres; pueden ser coincidencias. No convierte glifos CPC extendidos. -> textos.tsv
+[BASIC / estructura compatible] 0x00000000, 890 bytes: Programa tokenizado Locomotive BASIC; no se ha ejecutado. -> basic.txt
+[Z80 / interpretación] 0x00000000, 890 bytes: Desensamblado lineal; los datos también producen instrucciones. No prueba que haya código ni recupera el fuente original. -> z80.asm
+[audio / sin formato reconocido] 0x00000000, 890 bytes: No se encontraron contenedores YM2/3/3b/5/6 sin compresión o RIFF/WAVE válidos. Las rutinas AY, pistas tracker y muestras sin cabecera pueden seguir presentes.
+[sprites / interpretación] 0x00000000, 768 bytes: 6 bloques lineales de 16x16, modo 0; sin máscaras; paleta ilustrativa, no recuperada: 0,26,6,18,2,24,8,20,10,12,14,16,4,22,1,25. Dimensiones supuestas. No demuestra que sean sprites. -> sprites/atlas_modo0_000.bmp
+[sprites / interpretación] 0x00000000, 832 bytes: 13 bloques lineales de 16x16, modo 1; sin máscaras; paleta ilustrativa, no recuperada: 0,26,6,18,2,24,8,20,10,12,14,16,4,22,1,25. Dimensiones supuestas. No demuestra que sean sprites. -> sprites/atlas_modo1_000.bmp
+[sprites / interpretación] 0x00000000, 864 bytes: 27 bloques lineales de 16x16, modo 2; sin máscaras; paleta ilustrativa, no recuperada: 0,26,6,18,2,24,8,20,10,12,14,16,4,22,1,25. Dimensiones supuestas. No demuestra que sean sprites. -> sprites/atlas_modo2_000.bmp
+
+AVISOS Y LÍMITES
+- Sin cabecera AMSDOS utilizada: el relleno de registros CP/M, si existe, no se elimina automáticamente.
+- Los gráficos usan paleta y geometría supuestas salvo parámetros explícitos; no se detectan automáticamente máscaras, compresión, raster effects ni sprites compilados.
+- La música de juegos suele ser código Z80 con datos propios del reproductor. No se emula ni se convierte automáticamente a audio; solo se extraen formatos soportados. No reconocer un formato no demuestra ausencia de recursos.
+
+ARCHIVOS GENERADOS (informes excluidos de hashes)
+contenido.bin | 890 bytes | SHA-256 CD1692D06616FBFD0EFE33971CE2914AED5FD7BFDA96EB6F9079B455EA8F6F68
+textos.tsv | 527 bytes | SHA-256 B4DBB89C0D19814364397D89AC4744E631494C90B9A98BC77AC6B4B039341002
+hexadecimal.txt | 4337 bytes | SHA-256 6A63E08661CA84C3F18C62A6B90889E3607DD942A53A5EE55569F8CA40370D65
+basic.txt | 1048 bytes | SHA-256 F364FD3817E9A3521F6E5E6E62C3A454A303A664B6EECE90898FBD273B90EE5A
+z80.asm | 44956 bytes | SHA-256 7F88BD09D47EBF2C2154072D15527D85360020D9D28335562FB8DE93ADDFB467
+sprites/atlas_modo0_000.bmp | 5290 bytes | SHA-256 3FD31C17D837AD4299C13A280000563C3F358D269EBC98749610ABF0ED127E71
+sprites/mapa_modo0.tsv | 342 bytes | SHA-256 F20B6394AD57FE82B15BEF1CF31F641F679989065A5332B756D991ED5A96F22C
+sprites/bloques_modo0.bin | 768 bytes | SHA-256 5C767449731C78540831EF1A20ECED659551BB70E64FC19791467BCD198B54C7
+sprites/atlas_modo1_000.bmp | 13926 bytes | SHA-256 A1DCD004CA4D773DCEDADE8B8EE0EA7238F9B43AFF0A415BF897F74A4AFEAE44
+sprites/mapa_modo1.tsv | 681 bytes | SHA-256 13A48FEA7CD2923F8BBE936AC982623F50AB3886CB2E7047EA5A69F0E09537B8
+sprites/bloques_modo1.bin | 832 bytes | SHA-256 5CC38EA1A73BA77A0369ABA06097BA3F366B4B4075D6BB0A16FF3EFCDDA1308C
+sprites/atlas_modo2_000.bmp | 27798 bytes | SHA-256 9CF0323836F09E896EE491F7B3CD1C8FB766A6E7C7C8832F4734E3485F5F6AA8
+sprites/mapa_modo2.tsv | 1383 bytes | SHA-256 7DCD12E8E0AAD8BA51F20A2EBF697D5A1A819D2840B7C1E986EAD849F38C24B9
+sprites/bloques_modo2.bin | 864 bytes | SHA-256 C25EF2049F420E138F78F80837BBC2A35201B0B55534F2765134E73FA3CF584F
+
+Parámetros reproducibles: consultar Parameters en informe.json.

@@ -1,0 +1,33 @@
+{
+  "diskSha256": "ebea9f40e43763f1d44d16766635a55505682e535b2712e1d60451f0a657b3fd",
+  "files": {
+    "HEAD": {
+      "load": 368,
+      "entry": 0,
+      "size": 890
+    },
+    "HEADIMA.POW": {
+      "load": 35896,
+      "entry": 35896,
+      "size": 6856
+    },
+    "HEAD.BI2": {
+      "load": 40960,
+      "entry": 0,
+      "size": 3520
+    },
+    "HEAD.BI1": {
+      "load": 256,
+      "entry": 256,
+      "size": 40704
+    }
+  },
+  "rooms": 301,
+  "sprites": 100,
+  "pickups": 52,
+  "initialLives": 4,
+  "limitations": [
+    "Native gameplay rules not yet fully recovered",
+    "Sprite colors, animation, auxiliary patterns and scene fidelity require comparison with the original"
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "sourceAddress": 1364,
+  "routine": 1324,
+  "format": "CPC Gate Array hardware ink codes without 0x40 command prefix",
+  "palettes": [
+    {
+      "id": 0,
+      "hardwareInks": [
+        20,
+        21,
+        12,
+        3
+      ],
+      "borderInk": 20,
+      "rgb": [
+        "#000000",
+        "#0000FF",
+        "#FF0000",
+        "#FFFFB4"
+      ]
+    },
+    {
+      "id": 1,
+      "hardwareInks": [
+        20,
+        12,
+        29,
+        3
+      ],
+      "borderInk": 20,
+      "rgb": [
+        "#000000",
+        "#FF0000",
+        "#B400FF",
+        "#FFFFB4"
+      ]
+    },
+    {
+      "id": 2,
+      "hardwareInks": [
+        20,
+        24,
+        22,
+        3
+      ],
+      "borderInk": 20,
+      "rgb": [
+        "#000000",
+        "#B400B4",
+        "#00B400",
+        "#FFFFB4"
+      ]
+    },
+    {
+      "id": 3,
+      "hardwareInks": [
+        20,
+        0,
+        5,
+        3
+      ],
+      "borderInk": 20,
+      "rgb": [
+        "#000000",
+        "#B4B4B4",
+        "#FF00B4",
+        "#FFFFB4"
+      ]
+    },
+    {
+      "id": 4,
+      "hardwareInks": [
+        20,
+        22,
+        12,
+        11
+      ],
+      "borderInk": 20,
+      "rgb": [
+        "#000000",
+        "#00B400",
+        "#FF0000",
+        "#FFFFFF"
+      ]
+    },
+    {
+      "id": 5,
+      "hardwareInks": [
+        20,
+        12,
+        22,
+        11
+      ],
+      "borderInk": 20,
+      "rgb": [
+        "#000000",
+        "#FF0000",
+        "#00B400",
+        "#FFFFFF"
+      ]
+    },
+    {
+      "id": 6,
+      "hardwareInks": [
+        20,
+        6,
+        14,
+        11
+      ],
+      "borderInk": 20,
+      "rgb": [
+        "#000000",
+        "#00B4B4",
+        "#FFB400",
+        "#FFFFFF"
+      ]
+    },
+    {
+      "id": 7,
+      "hardwareInks": [
+        20,
+        12,
+        21,
+        3
+      ],
+      "borderInk": 20,
+      "rgb": [
+        "#000000",
+        "#FF0000",
+        "#0000FF",
+        "#FFFFB4"
+      ]
+    }
+  ],
+  "rgbSource": "CPCEC.C:147 empirical video_table",
+  "hardwareRgb": [
+    "#B4B4B4",
+    "#B4B4B4",
+    "#00FFB4",
+    "#FFFFB4",
+    "#0000B4",
+    "#FF00B4",
+    "#00B4B4",
+    "#FFB4B4",
+    "#FF00B4",
+    "#FFFFB4",
+    "#FFFF00",
+    "#FFFFFF",
+    "#FF0000",
+    "#FF00FF",
+    "#FFB400",
+    "#FFB4FF",
+    "#0000B4",
+    "#00FFB4",
+    "#00FF00",
+    "#00FFFF",
+    "#000000",
+    "#0000FF",
+    "#00B400",
+    "#00B4FF",
+    "#B400B4",
+    "#B4FFB4",
+    "#B4FF00",
+    "#B4FFFF",
+    "#B40000",
+    "#B400FF",
+    "#B4B400",
+    "#B4B4FF"
+  ]
+}

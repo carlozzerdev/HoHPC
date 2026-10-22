@@ -1,0 +1,1 @@
+Windows waveOut: opened and played all nine synthesized effects successfully.

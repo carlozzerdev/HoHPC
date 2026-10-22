@@ -1,0 +1,13 @@
+offset_archivo	longitud	texto_ASCII
+0x00000031	23	"Grande vitesse (o/n)";
+0x0000005A	27	"Equipement complet (o/n)";
+0x00000088	22	"Tirs infinis  (o/n)";
+0x000000B2	21	"Invulnerable (o/n)";
+0x000000F9	22	"Vies infinies (o/n)";
+0x00000144	14	"!headima.pow"
+0x0000015E	39	 0,13,26,24,25,9,15,11,20,1,2,6,3,8,7,4
+0x00000195	11	"head.bi2",
+0x000001B3	12	"!head.bi1",
+0x000002F5	48	 f3,21,00,06,11,00,01,01,00,9f,ed,b0,01,c4,7f,ed
+0x0000032B	48	 49,21,00,40,11,00,a0,01,c0,0d,ed,b0,01,c0,7f,ed
+0x00000361	12	 49,c3,00,01

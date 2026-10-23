@@ -9,6 +9,10 @@ public sealed class WorldData
     public List<PickupData> Pickups { get; set; } = [];
     public int InitialLives { get; set; } = 4;
     public List<SpriteData> Walls { get; set; }=[];
+    public List<SpriteData> FloorTiles { get; set; }=[];
+    public int[] DeathAnimation { get; set; }=[];
+    public int[] TeleportInAnimation { get; set; }=[];
+    public int[] DoorFlags { get; set; }=[];
     public int[][] Palettes { get; set; }=[];
     public int[][] TeleportPairs { get; set; }=[];
     public static WorldData Load() => JsonSerializer.Deserialize<WorldData>(
@@ -95,6 +99,15 @@ public sealed class RoomState(RoomData data)
     public List<Entity> Entities { get; } = data.Objects.Select(o => new Entity(o)).ToList();
     public List<PickupState> Pickups { get; }=[];
     public List<Projectile> Projectiles { get; }=[];
+    public List<TransientEffect> Effects { get; }=[];
+}
+public sealed class TransientEffect(float x,float y,float height,int[] frames)
+{
+    public float X=x,Y=y,Height=height;
+    public int Frame;
+    public bool Finished=>Frame>=frames.Length;
+    public int Sprite=>frames[Math.Min(Frame,frames.Length-1)]&127;
+    public bool Flip=>(frames[Math.Min(Frame,frames.Length-1)]&128)!=0;
 }
 public sealed class Projectile(float x,float y,float height,int direction)
 {
@@ -132,7 +145,17 @@ public sealed class Character(int room, bool head)
     public int Direction=2,PreviousDirection=-1,TurnDelay,JumpTicks,Lives=4;
     public int FastSteps,LongJumps,Protection;
     public int DamageTicks;
-    public int Sprite => (IsHead?
+    public int TeleportTicks;
+    public bool TeleportArriving;
+    public bool JumpFlight;
+    public (int room,float x,float y,float height) Entry=(room,3.5f,3.5f,0);
+    static readonly int[] deathFrames=[0x24,0xa4,0xa5,0x25,0xa5,0xa6,0x26,0x26,0xa6,0xa6,0x26,0x26];
+    static readonly int[] arrivalFrames=[0x26,0xa6,0x26,0xa6,0xa5,0x25,0x24,0xa5];
+    int? SpecialFrame=>DamageTicks>0?deathFrames[Math.Clamp(12-DamageTicks,0,11)]:
+        TeleportTicks>0?(TeleportArriving?arrivalFrames[Math.Clamp(8-TeleportTicks,0,7)]:deathFrames[Math.Clamp(12-TeleportTicks,0,11)]):null;
+    public bool Visible=>Lives>0;
+    public bool RenderFlip=>SpecialFrame is int frame?((frame&128)!=0)^!IsHead:Flip;
+    public int Sprite => SpecialFrame is int frame?frame&127:(IsHead?
         ((Direction&4)==0?new[]{30,31,30,32}:new[]{33,34,33,35}):
         ((Direction&4)==0?new[]{24,25,24,26}:new[]{27,28,27,29}))[Frame%4];
 }

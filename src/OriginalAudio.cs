@@ -65,7 +65,9 @@ internal sealed class OriginalAudio
         if((b&128)==0)return;
         p++;
         if(c!=0)return;
-        var n=state[3];int noise=m[p];n[0]=(byte)(((noise&192)<<1)&255);
+        // 1012: RLCA, not SLA. Bit 7 rotates into bit 0 and disables
+        // tone A for noise-only effects; bit 6 becomes the noise slide sign.
+        var n=state[3];int noise=m[p];n[0]=(byte)(((noise&192)<<1)|(noise>>7));
         int a=0x10B8+(noise&15)*2,v3=m[a];n[4]=n[5]=(byte)(v3>>4);n[6]=m[a+1];
         Pattern(n,v3&15);n[7]=(byte)(n[6]+m[W(n,1)]);n[3]=0;s[0]|=8;
     }
@@ -76,7 +78,10 @@ internal sealed class OriginalAudio
             if(m[p]!=255)break;
             p++;
             if(m[p]==255){active[c]=false;ids[c]=-1;return;}
-            if(m[p]==254){p=start[c];p++;} // repeat after initial transpose/volume
+            // 0E61/0E5A: FF 00 repeats from the initial configuration;
+            // FF FF ends. Treating 00 as a configuration falls through into
+            // the adjacent effect data (audible during sustained footsteps).
+            if(m[p]==0){p=start[c]+1;}
             Configuration(c,s,ref p);p++;
         }
         int b=m[p],note=b>>3;s[13]=m[0x10B0+(b&7)];

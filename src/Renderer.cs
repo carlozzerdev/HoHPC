@@ -7,6 +7,7 @@ public sealed class Renderer : IDisposable
     readonly Dictionary<(int,int,bool),Bitmap> cache=[];
     readonly Dictionary<int,SpriteData> sprites;
     readonly Dictionary<(int,int,bool),Bitmap> wallCache=[];
+    readonly Dictionary<(int,int),Bitmap> floorCache=[];
     readonly WorldData world;
     public static readonly Color[] Tints=[Color.FromArgb(244,209,135),Color.FromArgb(158,215,229),Color.FromArgb(191,217,150),Color.FromArgb(216,174,220),Color.FromArgb(235,173,147),Color.FromArgb(180,190,235),Color.FromArgb(216,211,198),Color.FromArgb(236,206,113)];
     public Renderer(WorldData data) {world=data;sprites=data.Sprites.ToDictionary(s=>s.Id);}
@@ -43,27 +44,50 @@ public sealed class Renderer : IDisposable
         var r=room.Data;var tint=Tints[r.Theme%8];
         int xmin=(r.Bounds[0]-8)/8,xmax=(r.Bounds[2]-8)/8;
         int ymin=(r.Bounds[1]-8)/8,ymax=(r.Bounds[3]-8)/8;
-        using var edge=new Pen(Ink(r.Area,1),1);
-        using var tile=new SolidBrush(Color.Black);
-        for(int x=xmin;x<xmax;x++)for(int y=ymin;y<ymax;y++)
+        if(NativeGame.HasFloor(r)&&world.FloorTiles.Count>r.Floor)
         {
-            if(!NativeGame.HasFloor(r))continue;
-            PointF[] p=[Project(x-.5f,y-.5f,0),Project(x+.5f,y-.5f,0),Project(x+.5f,y+.5f,0),Project(x-.5f,y+.5f,0)];
-            g.FillPolygon(tile,p);g.DrawPolygon(edge,p);
+            var key=(r.Floor,r.Area);
+            if(!floorCache.TryGetValue(key,out var texture))
+            {
+                var pattern=world.FloorTiles[r.Floor];
+                texture=new Bitmap(pattern.Width,pattern.Height);
+                for(int y=0;y<pattern.Height;y++)for(int x=0;x<pattern.Width;x++)
+                    texture.SetPixel(x,y,pattern.Pixels[y*pattern.Width+x]==0?Color.Black:Ink(r.Area,1));
+                floorCache[key]=texture;
+            }
+            using var floor=new TextureBrush(texture,WrapMode.Tile);
+            PointF[] boundary=[Project(xmin-.5f,ymin-.5f,0),Project(xmax-.5f,ymin-.5f,0),
+                Project(xmax-.5f,ymax-.5f,0),Project(xmin-.5f,ymax-.5f,0)];
+            g.FillPolygon(floor,boundary);
         }
         // Original direct wall planes (1A80), composed per room in native code.
         if(world.Walls.Count>0)
         {
             for(int x=xmin;x<xmax;x++)
             {
+                if(r.Exits[0]==1)continue;
                 var p=Project(x-.5f,ymax-.5f,0);
                 g.DrawImageUnscaled(Wall(r.Theme,r.Area,false),(int)p.X,(int)p.Y-56);
             }
             for(int y=ymax-1;y>=ymin;y--)
             {
+                if(r.Exits[1]==1)continue;
                 var p=Project(xmax-.5f,y+.5f,0);
                 g.DrawImageUnscaled(Wall(r.Theme,r.Area,true),(int)p.X,(int)p.Y-48);
             }
+        }
+        // Back walls must have a real aperture; transparent jamb sprites alone
+        // otherwise leave the brick texture visible inside the doorway.
+        for(int side=0;side<2;side++)
+        {
+            int code=r.Exits[side];if(code<2)continue;
+            var aperture=new List<PointF>();
+            PointF At(float along,float height)=>side==0?
+                Project(along,ymax-.5f,height+code-2):Project(xmax-.5f,along,height+code-2);
+            aperture.Add(At(2.75f,0));aperture.Add(At(4.25f,0));
+            float[] arch=[2.1f,2.8f,3.15f,3.3f,3.15f,2.8f,2.1f];
+            for(int i=6;i>=0;i--)aperture.Add(At(2.75f+i*.25f,arch[i]));
+            g.FillPolygon(Brushes.Black,aperture.ToArray());
         }
         // Ground shadows belong below every solid object.
         foreach(var person in people??[]) {
@@ -90,6 +114,15 @@ public sealed class Renderer : IDisposable
                 g.DrawImageUnscaled(image,(int)point.X-image.Width/2,(int)point.Y-image.Height+8);
             }));
         }
+        foreach(var effect in room.Effects)
+        {
+            var item=effect;
+            draws.Add(new(Volume.Body(item.X,item.Y,item.Height,.3f,.5f),()=>{
+                var image=Sprite(item.Sprite,r.Area,item.Flip);
+                var point=Project(item.X,item.Y,item.Height);
+                g.DrawImageUnscaled(image,(int)point.X-image.Width/2,(int)point.Y-image.Height+8);
+            }));
+        }
         foreach(var e in room.Entities.Where(e=>!e.Removed))
         {
             var entity=e;
@@ -105,11 +138,11 @@ public sealed class Renderer : IDisposable
                 }
             }));
         }
-        foreach(var p in people??[])
+        foreach(var p in (people??[]).Where(p=>p.Visible))
         {
             var person=p;
             draws.Add(new(Volume.Body(p.X,p.Y,p.Height,.375f,1),()=>{
-                var s=Sprite(person.Sprite,r.Area,person.Flip);
+                var s=Sprite(person.Sprite,r.Area,person.RenderFlip);
                 var pt=Project(person.X,person.Y,person.Height);
                 g.DrawImageUnscaled(s,(int)pt.X-s.Width/2,(int)pt.Y-s.Height+7);
             }));
@@ -125,7 +158,18 @@ public sealed class Renderer : IDisposable
                 if(side==1)x=xmax;else if(side==3)x=xmin-1;
                 var point=Project(x,y,code-2);
                 int id=style*2+half;
-                bool flip=side==1||side==3;
+                // 1EB1/2164: orientation is stored per jamb, not per door.
+                bool flip=world.DoorFlags.Length==8?
+                    (world.DoorFlags[side*2+half]&0x10)!=0:side is 1 or 3;
+                // 2195 adds the original stone support beneath raised doors.
+                if(code>2)
+                {
+                    var basePoint=Project(x,y,code-3);
+                    draws.Add(new(Volume.Body(x,y,code-3,.5f,1),()=>{
+                        var support=Sprite(84,r.Area,flip);
+                        g.DrawImageUnscaled(support,(int)basePoint.X-support.Width/2,(int)basePoint.Y-support.Height+8);
+                    }));
+                }
                 draws.Add(new(Volume.Body(x,y,code-2,.5f,2),()=>{
                     var door=Sprite(id,r.Area,flip);
                     g.DrawImageUnscaled(door,(int)point.X-door.Width/2,(int)point.Y-door.Height+8);
@@ -136,6 +180,19 @@ public sealed class Renderer : IDisposable
         return b;
     }
     sealed record DrawItem(Volume Bounds,Action Draw);
+    public Bitmap ConnectedRoom(int id,IReadOnlyDictionary<int,RoomState> rooms,RoomConnections connections,IEnumerable<Character> people)
+    {
+        var positions=connections.Group(id).Keys.ToDictionary(key=>key,key=>RoomConnections.ProjectOffset(connections.Offset(id,key)));
+        float minX=positions.Values.Min(p=>p.X),minY=positions.Values.Min(p=>p.Y);
+        int width=320+(int)(positions.Values.Max(p=>p.X)-minX),height=220+(int)(positions.Values.Max(p=>p.Y)-minY);
+        var result=new Bitmap(width,height);using var graphics=Graphics.FromImage(result);graphics.Clear(Color.Black);
+        foreach(var entry in positions.OrderBy(p=>p.Value.Y))
+        {
+            using var image=Room(rooms[entry.Key],people.Where(p=>p.Room==entry.Key),true);
+            graphics.DrawImageUnscaled(image,(int)(entry.Value.X-minX),(int)(entry.Value.Y-minY));
+        }
+        return result;
+    }
     public Bitmap Atlas(WorldData data)
     {
         var b=new Bitmap(800,700);using var g=Graphics.FromImage(b);g.Clear(Color.FromArgb(19,24,32));
@@ -148,5 +205,5 @@ public sealed class Renderer : IDisposable
         }
         return b;
     }
-    public void Dispose(){foreach(var b in cache.Values)b.Dispose();foreach(var b in wallCache.Values)b.Dispose();}
+    public void Dispose(){foreach(var b in cache.Values)b.Dispose();foreach(var b in wallCache.Values)b.Dispose();foreach(var b in floorCache.Values)b.Dispose();}
 }

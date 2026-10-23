@@ -61,6 +61,16 @@ public sealed partial class NativeGame
         head.Room=heels.Room;head.X=heels.X;head.Y=heels.Y;head.Height=heels.Height+1;
         head.Direction=heels.Direction;head.Flip=heels.Flip;head.Frame=heels.Frame;
     }
+    void RememberEntry(Character p)
+    {
+        p.Entry=(p.Room,p.X,p.Y,p.Height);
+        if(Joined)Characters[0].Entry=(p.Room,p.X,p.Y,p.Height+1);
+    }
+    void SyncTeleportVisual(Character p)
+    {
+        p.TeleportTicks=TeleportTicks;p.TeleportArriving=TeleportArriving;
+        if(Joined){Characters[0].TeleportTicks=TeleportTicks;Characters[0].TeleportArriving=TeleportArriving;}
+    }
     public void Jump()=>jumpRequested=true;
     public void Fire()
     {
@@ -82,6 +92,11 @@ public sealed partial class NativeGame
     {
         pushedThisTick.Clear();
         Ticks++;var p=Player;
+        foreach(var r in Rooms.Values)
+        {
+            foreach(var effect in r.Effects)effect.Frame++;
+            r.Effects.RemoveAll(e=>e.Finished);
+        }
         if(Ticks%3==0)
         {
             if(p.Protection>0)p.Protection--;
@@ -91,6 +106,7 @@ public sealed partial class NativeGame
         {
             SetWalkingSound(false);
             p.DamageTicks--;
+            if(Joined)Characters[0].DamageTicks=p.DamageTicks;
             if(p.DamageTicks==0)Respawn(p);
             jumpRequested=false;return;
         }
@@ -101,7 +117,10 @@ public sealed partial class NativeGame
             {
                 p.Room=teleportDestination;visited.Add(p.Room);TeleportArriving=true;TeleportTicks=8;
                 if(Joined)SyncJoined();
+                RememberEntry(p);
+                Sound?.Invoke(SoundCue.TeleportArrive);
             }
+            SyncTeleportVisual(p);
             jumpRequested=false;return;
         }
         foreach(var r in Rooms.Values)
@@ -115,10 +134,13 @@ public sealed partial class NativeGame
         StepObjects(room);
         StepPickups(room);
         StepProjectiles(room);
+        bool launched=false;
         if(jumpRequested&&p.Grounded)
         {
             if(TryTeleport(room,p)){SetWalkingSound(false);jumpRequested=false;return;}
             Sound?.Invoke(SoundCue.Jump);
+            launched=true;
+            p.JumpFlight=true;
             // 2A41–2A6F: spring adds one level; Head/bonus adds another.
             // The combined 12-tick result is explicitly capped at ten.
             int boost=room.Entities.Any(e=>IsSolid(e)&&(e.Sprite&127) is 43 or 44&&
@@ -148,7 +170,7 @@ public sealed partial class NativeGame
         }
         else {p.PreviousDirection=-1;p.TurnDelay=2;}
         SetWalkingSound(walked);
-        Vertical(room,p);
+        Vertical(room,p,launched);
         Collect(room,p);
         if(room.Entities.Any(e=>!e.Removed&&e.Dangerous&&OverlapXY(e,p.X,p.Y)&&p.Height<e.Height+e.Source.Collider.Height&&p.Height+BodyHeight>e.Height))
             Damage(p);
@@ -167,7 +189,8 @@ public sealed partial class NativeGame
             int target=pair[0]==p.Room?pair[1]:pair[1]==p.Room?pair[0]:-1;
             if(target<0)continue;
             if(!Rooms.ContainsKey(target))throw new InvalidDataException("Unknown teleport target");
-            teleportDestination=target;TeleportArriving=false;TeleportTicks=12;Sound?.Invoke(SoundCue.Teleport);
+            teleportDestination=target;TeleportArriving=false;TeleportTicks=12;
+            SyncTeleportVisual(p);Sound?.Invoke(SoundCue.TeleportDepart);
             Notice="Teletransporte";return true;
         }
         return false;
@@ -208,16 +231,27 @@ public sealed partial class NativeGame
         if(Characters[0].Protection>0)damageMask&=~2;
         if(damageMask==0)return;
         Sound?.Invoke(SoundCue.Damage);p.DamageTicks=12;Notice="Has perdido una vida";
+        if(Joined)Characters[0].DamageTicks=12;
     }
     void Respawn(Character p)
     {
+        bool wasJoined=Joined;
         if((damageMask&1)!=0)Characters[1].Lives=Math.Max(0,Characters[1].Lives-1);
         if((damageMask&2)!=0)Characters[0].Lives=Math.Max(0,Characters[0].Lives-1);
-        damageMask=0;p.JumpTicks=0;p.Height=0;p.Grounded=true;
+        damageMask=0;p.JumpTicks=0;p.Height=0;p.Grounded=true;p.JumpFlight=false;
         if(Joined)Joined=false;
         if(checkpoint is {} saved){p.Room=saved.room;p.X=saved.x;p.Y=saved.y;p.Height=saved.height;}
-        else {p.X=3.5f;p.Y=3.5f;}
+        else {var entry=p.Entry;p.Room=entry.room;p.X=entry.x;p.Y=entry.y;p.Height=entry.height;}
+        p.Grounded=HasFloor(Rooms[p.Room].Data)&&p.Height==0;
         p.Protection=12;
+        if(wasJoined)
+        {
+            var head=Characters[0];
+            var entry=head.Entry;
+            head.Room=p.Room;head.X=p.X;head.Y=p.Y;head.Height=p.Height+1;
+            if(checkpoint is null){head.Room=entry.room;head.X=entry.x;head.Y=entry.y;head.Height=entry.height;}
+            head.JumpTicks=0;head.DamageTicks=0;head.Grounded=false;head.Protection=12;
+        }
         if(p.Lives==0){Active=Characters[0].Lives>0?0:1;Notice=GameOver?"Fin de la partida":"Cambia al otro personaje";}
     }
     public void Carry()
@@ -239,6 +273,14 @@ public sealed partial class NativeGame
             p.Height-e.Height>=1-.0001f&&p.Height-e.Height<=7/6f+.0001f);
         if(item is null){Notice="Sitúate sobre un objeto transportable";return;}
         Sound?.Invoke(SoundCue.Carry);item.Removed=true;room.Entities.Remove(item);Carried=item;Notice="Objeto en la bolsa";
+    }
+    static void AddPickupEffect(RoomState room,float x,float y,float height,int[] animation,int sprite,int start,bool flip=false)
+    {
+        // 4773/478C: pickup disappearance retains its normal animation for
+        // eight updates. No synthetic burst or replacement artwork is used.
+        int[] frames=Enumerable.Range(0,8).Select(i=>
+            (animation.Length==0?sprite:animation[(start+i)%animation.Length])^(flip?128:0)).ToArray();
+        room.Effects.Add(new(x,y,height,frames));
     }
     void Collect(RoomState room,Character p)
     {
@@ -264,6 +306,7 @@ public sealed partial class NativeGame
                 case >=9 and <=13:CrownMask|=1<<(d.Kind-9);Notice=Won?"Las cinco coronas recuperadas":"Corona recuperada";break;
                 default:continue;
             }
+            AddPickupEffect(room,d.X,d.Y,pickup.Height,d.Animation,pickup.Sprite,pickup.Frame);
             pickup.Collected=true;Sound?.Invoke(d.Kind is 0 or 1 or 2?SoundCue.PickupEquipment:SoundCue.Pickup);
         }
     }
@@ -300,12 +343,17 @@ public sealed partial class NativeGame
     static bool Doorway(RoomData r,Character p,int side,float along)
     {
         int code=r.Exits[side];
+        if(code==1)return true;
         return code>=2&&Math.Abs(along-3.5f)<=.25f&&Math.Abs(p.Height-(code-2))<=1/6f;
     }
-    void Vertical(RoomState room,Character p)
+    void Vertical(RoomState room,Character p,bool launched)
     {
         if(p.JumpTicks>0)
         {
+            // 27BB requests 84 during ascent. The launch tick keeps 85,
+            // whose original per-tick priority is higher (2B21).
+            if(!launched)
+                Sound?.Invoke(SoundCue.Rise);
             p.JumpTicks--;
             for(int i=0;i<2;i++)
                 if(!Blocked(room,p.X,p.Y,p.Height+1/6f))p.Height+=1/6f;
@@ -322,7 +370,13 @@ public sealed partial class NativeGame
             support=Math.Max(support,other.Height+1);
         p.Height=Math.Max(support,p.Height-((p.IsHead||Joined)?1:2)/6f);
         p.Grounded=Math.Abs(p.Height-support)<.0001f;
+        if(!p.Grounded)
+            Sound?.Invoke(!p.IsHead&&!Joined&&p.JumpFlight?SoundCue.FallHeels:SoundCue.Fall);
         if(p.Grounded&&!wasGrounded)Sound?.Invoke(SoundCue.Land);
+        if(p.Grounded)p.JumpFlight=false;
+        // 2CAA/2CB7: floor 6 supports the player at Z=C0 and kills on contact.
+        // Floor 7 is the opening that continues into the room below.
+        if(p.Grounded&&support==0&&room.Data.Floor==6)Damage(p);
         if(p.Grounded&&room.Entities.Any(e=>e.Dangerous&&!e.Removed&&OverlapXY(e,p.X,p.Y)&&Math.Abs(e.Height+e.Source.Collider.Height-support)<.001f))Damage(p);
     }
     void CheckBoundary(Character p)
@@ -338,12 +392,16 @@ public sealed partial class NativeGame
         var r=Rooms[p.Room].Data;
         // 018D changes the high XY nibble for physical X, low nibble for Y.
         int id=((((r.GridY+dx)&15)*16+((r.GridX+dy)&15))<<8)|(r.Level<<4);
-        if(!Rooms.TryGetValue(id,out var dest)||r.Exits[side]<2)return;
+        if(!Rooms.TryGetValue(id,out var dest)||r.Exits[side]==0)return;
         p.Room=id;var b=dest.Data.Bounds;
-        p.Height=dest.Data.Exits[(side+2)%4]-2;
-        p.JumpTicks=0;p.Grounded=true;
+        if(r.Exits[side]>=2)
+        {
+            p.Height=dest.Data.Exits[(side+2)%4]-2;
+            p.JumpTicks=0;p.Grounded=true;p.JumpFlight=false;
+        }
         if(dx<0)p.X=(b[2]-15)/8f;if(dx>0)p.X=(b[0]-9)/8f;
         if(dy<0)p.Y=(b[3]-15)/8f;if(dy>0)p.Y=(b[1]-9)/8f;
         visited.Add(id);Notice="";
+        RememberEntry(p);
     }
 }

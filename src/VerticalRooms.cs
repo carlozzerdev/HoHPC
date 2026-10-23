@@ -2,7 +2,7 @@ namespace HoH26;
 
 public sealed partial class NativeGame
 {
-    internal static bool HasFloor(RoomData room)=>room.Floor is not (6 or 7);
+    internal static bool HasFloor(RoomData room)=>room.Floor!=7;
     bool StandingOn(Character p,Entity e,int room)=>p.Room==room&&p.JumpTicks==0&&
         OverlapXY(e,p.X,p.Y)&&Math.Abs(p.Height-e.Height-e.Source.Collider.Height)<.001f;
 
@@ -62,10 +62,11 @@ public sealed partial class NativeGame
         {
             int id=(p.Room&0xff00)|(((room.Level-1)&15)<<4);
             // 21D8 examines the actual room above; only floor 6/7 is open.
-            if(Rooms.TryGetValue(id,out var above)&&!HasFloor(above.Data))
+            if(Rooms.TryGetValue(id,out var above)&&above.Data.Floor is 6 or 7)
             {
                 p.Room=id;p.Height=Joined?2:1;p.JumpTicks=0;p.Grounded=false;
                 visited.Add(id);Notice="";
+                RememberEntry(p);
             }
             else {p.Height=10;p.JumpTicks=0;p.Grounded=false;}
         }
@@ -76,6 +77,7 @@ public sealed partial class NativeGame
             {
                 p.Room=id;p.Height=10;p.JumpTicks=0;p.Grounded=false;
                 visited.Add(id);Notice="";
+                RememberEntry(p);
             }
             // No fabricated destination if the recovered map has no room below.
             else {p.Height=0;Damage(p);}

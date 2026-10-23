@@ -237,6 +237,16 @@ def palettes(m):
         0xb400b4,0xb4ffb4,0xb4ff00,0xb4ffff,0xb40000,0xb400ff,0xb4b400,0xb4b4ff]
     return [[hardware[v&31] for v in m[0x554+i*4:0x558+i*4]] for i in range(8)]
 
+def floor_tiles(m):
+    # 19D6 selects B4B0+48*floor. 19EA and 1A04 consume this as
+    # repeating 16-row, two-byte monochrome patterns (remaining rows wrap).
+    # 1A04 adds C=10 in alternating columns (bit7 of segment), i.e.
+    # shifts the neighbouring 16-pixel column by eight rows. Export both
+    # phases so a plain texture repeat reproduces that stagger.
+    return [dict(id=i,address=0xb4b0+i*48,width=32,height=16,
+        pixels=[1 if m[0xb4b0+i*48+((y+(8 if x>=16 else 0))%16)*2+(x%16)//8]&(128>>(x%8)) else 0
+                for y in range(16) for x in range(32)]) for i in range(8)]
+
 def main():
     disk=ROOT/'Head over Heels (Europe).dsk'
     files=disk_files(disk)
@@ -247,6 +257,10 @@ def main():
     ps=pickups(m)
     (dest/'world.json').write_text(json.dumps(dict(rooms=rs,sprites=ss,pickups=ps,
         behaviors=behaviors(m),initialLives=4,walls=walls(m),palettes=palettes(m),
+        floorTiles=floor_tiles(m),
+        deathAnimation=list(m[0x24ed:0x24f9]),
+        teleportInAnimation=list(m[0x24fb:0x2503]),
+        doorFlags=list(m[0x1eb1:0x1eb9]),
         teleportPairs=[list(struct.unpack_from('<HH',m,p)) for p in range(0x3490,0x34e8,4)]),separators=(',',':')))
     manifest=dict(diskSha256=hashlib.sha256(disk.read_bytes()).hexdigest(),files={k:v[1] for k,v in files.items()},rooms=len(rs),sprites=len(ss),
         pickups=len(ps),initialLives=4,

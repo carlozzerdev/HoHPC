@@ -32,7 +32,7 @@ static class Program
                 Thread.Sleep(150);
                 foreach(var cue in Enum.GetValues<SoundCue>().Where(c=>GameAudio.Command(c)>=0)) { audio.Play(cue);Thread.Sleep(750); }
                 if(audio.Error is not null)throw new Exception(audio.Error);
-                File.WriteAllText(Path.Combine(AppContext.BaseDirectory,"audio-verification.txt"),"Windows waveOut: opened and submitted the eleven mapped CPC effects. Auditory equivalence not validated.");
+                File.WriteAllText(Path.Combine(AppContext.BaseDirectory,"audio-verification.txt"),"Windows waveOut: opened and submitted the sixteen mapped CPC effects. Auditory equivalence not validated.");
                 return;
             }
             var data=WorldData.Load();
@@ -52,6 +52,10 @@ static class Program
         int pushes=PushVerification.Run(data);
         int mechanics=MechanicsVerification.Run(data);
         int pickups=PickupVerification.Run(data);
+        int interactions=InteractionVerification.Run();
+        int movementAudio=MovementAudioVerification.Run(data);
+        int teleportAnimations=TeleportVerification.Run(data);
+        int continuousRooms=ConnectedRoomVerification.Run(data);
         int doorLinks=VerifyTopology(data);
         var game=new NativeGame(data);
         if(game.Rooms.Count!=301||data.Sprites.Count!=100)throw new Exception("Unexpected asset inventory");
@@ -61,6 +65,8 @@ static class Program
         if(!game.Player.Grounded||game.Player.Height<0||other.X!=oldX)throw new Exception("Native simulation failed");
         var dir=Path.Combine(AppContext.BaseDirectory,"verification");Directory.CreateDirectory(dir);
         using var renderer=new Renderer(data);
+        using(var longRoom=renderer.ConnectedRoom(0x4260,game.Rooms,new RoomConnections(data.Rooms),[]))longRoom.Save(Path.Combine(dir,"room-4260-complete.png"));
+        VisualVerification.Run(data,renderer,dir);
         using(var atlas=renderer.Atlas(data))atlas.Save(Path.Combine(dir,"sprites.png"));
         using(var room=renderer.Room(game.Rooms[0x8a40],game.Characters.Where(c=>c.Room==0x8a40)))room.Save(Path.Combine(dir,"head-start.png"));
         using(var room=renderer.Room(game.Rooms[0x8940],game.Characters.Where(c=>c.Room==0x8940)))room.Save(Path.Combine(dir,"heels-start.png"));
@@ -102,10 +108,13 @@ static class Program
         window.ShowOverview();
         window.DrawToBitmap(screenshot,new Rectangle(0,0,1200,800));
         screenshot.Save(Path.Combine(dir,"multi-room.png"));
+        window.VerifyContinuousRoom();
+        window.DrawToBitmap(screenshot,new Rectangle(0,0,1200,800));
+        screenshot.Save(Path.Combine(dir,"room-4260-window.png"));
         File.WriteAllText(Path.Combine(dir,"results.json"),JsonSerializer.Serialize(new{
             passed=true,roomsRendered=game.Rooms.Count,spritesDecoded=data.Sprites.Count,
-            spatialCameraValidated=true,nativeJumpAndLanding=true,independentCharacters=true,z80RuleChecks=rules,pushChecks=pushes,mechanicsChecks=mechanics,pickupChecks=pickups,
-            pickupsRecovered=data.Pickups.Count,nativeRuntime=true,
+            spatialCameraValidated=true,nativeJumpAndLanding=true,independentCharacters=true,z80RuleChecks=rules,pushChecks=pushes,mechanicsChecks=mechanics,pickupChecks=pickups,interactionChecks=interactions,
+            pickupsRecovered=data.Pickups.Count,nativeRuntime=true,movementAudioChecks=movementAudio,teleportAnimationChecks=teleportAnimations,continuousRoomChecks=continuousRooms,
             doorLinksValidated=doorLinks,teleportPairsRecovered=data.TeleportPairs.Length,
             fidelityValidated=false,completeGame=false},new JsonSerializerOptions{WriteIndented=true}));
     }
@@ -132,6 +141,7 @@ static class Program
 sealed class GameWindow : Form
 {
     readonly WorldData data; NativeGame game; readonly Renderer renderer;
+    readonly RoomConnections connections;
     readonly GameAudio audio=new();
     readonly HashSet<Keys> keys=[];
     readonly System.Windows.Forms.Timer timer=new(){Interval=16};
@@ -154,8 +164,15 @@ sealed class GameWindow : Form
             var origin=roomPositions[cameraRoom];
             roomPositions[next.Id]=new(origin.X+delta.X,origin.Y+delta.Y);
         }
+        foreach(int member in connections.Group(next.Id).Keys)
+        {
+            var delta=RoomConnections.ProjectOffset(connections.Offset(next.Id,member));
+            var origin=roomPositions[next.Id];
+            roomPositions[member]=new(origin.X+delta.X,origin.Y+delta.Y);
+        }
         cameraRoom=next.Id;
-        var target=roomPositions[next.Id];
+        var group=connections.Group(next.Id).Keys.Select(id=>roomPositions[id]).ToArray();
+        var target=new PointF(group.Average(p=>p.X),group.Average(p=>p.Y));
         float blend=snap?1:1-MathF.Exp(-dt*7);
         camera=new(camera.X+(target.X-camera.X)*blend,camera.Y+(target.Y-camera.Y)*blend);
     }
@@ -165,7 +182,7 @@ sealed class GameWindow : Form
     readonly Font label=new("Segoe UI",12,FontStyle.Bold);
     public GameWindow(WorldData data)
     {
-        this.data=data;game=new(data);game.Sound+=audio.Play;renderer=new(data);selectedRoom=game.Player.Room;
+        this.data=data;connections=new(data.Rooms);game=new(data);game.Sound+=audio.Play;renderer=new(data);selectedRoom=game.Player.Room;
         Text="Head over Heels · PC nativo · prototipo de reconstrucción";
         ClientSize=new Size(1200,800);MinimumSize=new Size(960,680);
         BackColor=Color.FromArgb(14,18,25);ForeColor=Color.White;DoubleBuffered=true;KeyPreview=true;
@@ -225,6 +242,16 @@ sealed class GameWindow : Form
             throw new Exception("Teleport camera did not reach destination");
         game.Player.Room=adjacent.Id;selectedRoom=adjacent.Id;UpdateCamera(0,true);
     }
+    internal void VerifyContinuousRoom()
+    {
+        overview=false;roomPositions.Clear();game.Player.Room=0x4260;selectedRoom=0x4260;
+        game.Player.X=2;game.Player.Y=2;game.Player.Height=0;UpdateCamera(0,true);
+        if(!roomPositions.ContainsKey(0x4360)||roomPositions[0x4360]!=new PointF(-96,-48))
+            throw new Exception("Long room missing its second half");
+        var before=camera;game.Player.Room=0x4360;UpdateCamera(0,true);
+        if(camera!=before)throw new Exception("Camera moves across a continuous room's internal boundary");
+        game.Player.Room=0x4260;UpdateCamera(0,true);
+    }
     protected override void OnPaint(PaintEventArgs e)
     {
         var g=e.Graphics;g.Clear(BackColor);
@@ -242,7 +269,8 @@ sealed class GameWindow : Form
         g.DrawString("Habitación "+selectedRoom.ToString("X4"),mono,bright,sx,151);
         var room=game.Rooms[selectedRoom].Data;
         g.DrawString($"Planta {room.Level} · Sector {room.GridX},{room.GridY}",small,muted,sx,176);
-        g.DrawString($"{room.Objects.Count} objetos originales",small,muted,sx,200);
+        int objectCount=connections.Group(selectedRoom).Keys.Sum(id=>game.Rooms[id].Data.Objects.Count);
+        g.DrawString($"{objectCount} objetos originales",small,muted,sx,200);
         g.DrawString($"Vidas {game.Player.Lives} · Coronas {System.Numerics.BitOperations.PopCount((uint)game.CrownMask)}/5",small,bright,sx,225);
         g.DrawString("EL OTRO PERSONAJE",mono,muted,sx,248);
         var other=game.Characters[game.Active^1];
@@ -260,7 +288,9 @@ sealed class GameWindow : Form
     void DrawWorld(Graphics g,Rectangle bounds)
     {
         var state=g.Save();g.SetClip(bounds);
-        float scale=Math.Min(bounds.Width/440f,bounds.Height/285f);
+        var group=connections.Group(game.Player.Room).Keys.Select(id=>roomPositions[id]).ToArray();
+        float width=440+group.Max(p=>p.X)-group.Min(p=>p.X),height=285+group.Max(p=>p.Y)-group.Min(p=>p.Y);
+        float scale=Math.Min(bounds.Width/width,bounds.Height/height);
         g.InterpolationMode=InterpolationMode.NearestNeighbor;g.PixelOffsetMode=PixelOffsetMode.Half;
         foreach(var entry in roomPositions.OrderBy(p=>p.Value.Y))
         {
@@ -275,9 +305,9 @@ sealed class GameWindow : Form
     }
     void DrawRoom(Graphics g,Rectangle bounds,int id,bool people)
     {
-        using var b=renderer.Room(game.Rooms[id],people?game.Characters.Where(p=>p.Room==id):[]);
-        float scale=Math.Min(bounds.Width/320f,bounds.Height/220f);
-        int w=(int)(320*scale),h=(int)(220*scale);
+        using var b=renderer.ConnectedRoom(id,game.Rooms,connections,people?game.Characters:[]);
+        float scale=Math.Min(bounds.Width/(float)b.Width,bounds.Height/(float)b.Height);
+        int w=(int)(b.Width*scale),h=(int)(b.Height*scale);
         g.InterpolationMode=InterpolationMode.NearestNeighbor;g.PixelOffsetMode=PixelOffsetMode.Half;
         g.DrawImage(b,new Rectangle(bounds.X+(bounds.Width-w)/2,bounds.Y+(bounds.Height-h)/2,w,h));
     }

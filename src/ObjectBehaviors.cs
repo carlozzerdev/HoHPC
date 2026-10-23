@@ -12,6 +12,9 @@ public sealed partial class NativeGame
         {
             if(e.Removed||e.Frozen)continue;
             int behavior=e.Behavior;
+            // 4C18/4C23: the teleporter requests its AY effect each update,
+            // including while the character moves around its room.
+            if(behavior==27){Sound?.Invoke(SoundCue.Teleport);continue;}
             if(behavior is 18 or 23){e.BehaviorState=behavior==18?0x52:0x90;e.Behavior=16;continue;}
             if(behavior==16){StepLift(room,e);continue;}
             if(behavior==28)StepSpring(room,e);

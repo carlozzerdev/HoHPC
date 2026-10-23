@@ -65,7 +65,7 @@ en `build/actual/verification`. Son comprobaciones de funcionamiento del prototi
 
 Faltan variantes de cambios verticales y caídas, interacciones completas entre cuerpos,
 interruptores y varias familias de objetos, música y menús originales.
-El suelo usa una rejilla provisional y la selección de variantes de pared y
+El suelo usa los patrones recuperados del disco; la selección de variantes de pared y
 partes de puerta está incompleta. La colisión compuesta, los checkpoints y la
 respuesta exacta a todas las interacciones necesitan más reconstrucción.
 
@@ -160,3 +160,44 @@ La salida mantiene tres bloques PCM en cola y actualiza el secuenciador a 50 Hz.
 `build/actual/HeadOverHeelsPC.exe --verify-audio-timing` mide durante tres segundos
 la posición real del dispositivo, sin emitir sonido, y guarda `audio-timing.json`.
 Comprueba que la velocidad queda dentro del 5 % de las 22.050 muestras/segundo.
+
+
+## Detalles visuales y sonido (23/10/2026)
+
+Los ocho patrones de suelo se recuperan directamente del disco. El tipo 6
+muestra pinchos y mata al tocar el suelo; los objetos y plataformas que sirven
+de apoyo permiten pasar por encima. El tipo 7 conserva el hueco de ca?da.
+La muerte reproduce su secuencia original de doce actualizaciones y despu?s
+resta la vida; el retorno usa la entrada de cada personaje o el checkpoint.
+Los coleccionables mantienen su animaci?n ocho actualizaciones al recogerse.
+El transporte con bolsa conserva la retirada inmediata del original.
+
+El muelle conserva sus sprites originales de compresi?n y recuperaci?n
+43/44/43/44/43. Las puertas elevadas muestran sus apoyos originales y las
+aperturas posteriores dejan de mostrar ladrillos en el interior. El recorte
+del hueco es una adaptaci?n geom?trica nativa; las variantes completas de
+pared siguen pendientes. Se corrigi? adem?s la rotaci?n del control de ruido AY,
+que dejaba un tono a?adido en algunos efectos.
+
+`--verify` genera l?minas de suelos, puertas, muerte, muelle y recogida en
+`build/actual/verification`. La evidencia se recoge en
+`analysis/VISUALS-Z80.md`. Las pruebas cubren l?gica, datos y salida gr?fica;
+no certifican fidelidad audiovisual completa frente al v?deo.
+
+
+El teletransporte reproduce la desaparici?n de12 ticks y la aparici?n de8
+con sus tablas originales, tambi?n con los dos personajes unidos. La salida
+y llegada usan los grupos sonoros C7/C8; el sonido47 permanece como ambiente
+de la plataforma. La verificaci?n genera `teleport-animation.png` y comprueba
+los16 efectos de sonido recuperados mediante `tools/verify_audio.py`.
+
+
+## Salas largas y pasos continuos
+
+Las salidas de c?digo1 unen registros en una misma sala visible. La4260 y
+la4360 se muestran juntas, con sus dos filas de seis objetos, sin pared
+intermedia. La c?mara mantiene el mismo centro al pasar de una mitad a otra.
+El movimiento y el salto pueden cruzar toda la uni?n, sin exigir la apertura
+estrecha de una puerta. El visor y la miniatura tambi?n encuadran el conjunto.
+`--verify` comprueba los enlaces continuos y genera `room-4260-complete.png`
+y `room-4260-window.png`. El estado de cada registro sigue siendo independiente.

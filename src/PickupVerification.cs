@@ -10,6 +10,9 @@ static class PickupVerification
         foreach(bool heels in new[]{false,true})
         {
             var g=new NativeGame(data);if(heels)g.Switch();
+            // These rooms have spike floors. Isolate pickup physics from death
+            // while the test waits below the falling item.
+            g.Player.Protection=999;
             g.Player.Room=0x3060;g.Player.X=2;g.Player.Y=1;
             var horn=g.Rooms[0x3060].Pickups.Single(p=>p.Data.Kind==1);
             Tick(g);Check(Math.Abs(horn.Height-(7-1/6f))<.001f,"original horn falls from spawn height");
@@ -29,12 +32,13 @@ static class PickupVerification
                 g.Fire();Check(g.Rooms[0x5260].Projectiles.Count==1&&g.Ammunition==5,"collected horn enables actual firing");
             }
         }
-        var falling=new NativeGame(data);falling.Player.Room=0x3060;
+        var falling=new NativeGame(data);falling.Player.Protection=999;falling.Player.Room=0x3060;
         falling.Player.X=4;falling.Player.Y=0;falling.Player.Height=3;
         for(int i=0;i<30&&!falling.HasHooter;i++)Tick(falling);
         Check(falling.HasHooter,"falling horn is collected when it contacts the player's head");
         var joined=new NativeGame(data);joined.Characters[0].Room=joined.Characters[1].Room;
         joined.Characters[0].Height=1;joined.Switch();joined.Player.Room=0x3060;
+        foreach(var p in joined.Characters)p.Protection=999;
         joined.Player.X=4;joined.Player.Y=0;joined.Player.Height=3;
         for(int i=0;i<30&&!joined.HasHooter;i++)Tick(joined);
         Check(joined.HasHooter,"joined body can collect horn on contact");

@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace HoH26;
 
-public enum SoundCue { Step, Jump, Land, Fire, Pickup, Damage, Teleport, Switch, Carry, Spring, LiftMove, PickupEquipment, StopStep }
+public enum SoundCue { Step, Jump, Land, Fire, Pickup, Damage, Teleport, Switch, Carry, Spring, LiftMove, PickupEquipment, StopStep, Rise, Fall, FallHeels, TeleportDepart, TeleportArrive }
 
 // PCM rendering of the original CPC effect data and native AY sequencer.
 sealed class GameAudio : IDisposable
@@ -22,13 +22,20 @@ sealed class GameAudio : IDisposable
     internal static int Command(SoundCue cue)=>cue switch {
         SoundCue.Step=>0x80,
         SoundCue.Jump=>0x85, SoundCue.Land=>0x88,
+        SoundCue.Rise=>0x84, SoundCue.Fall=>0x83, SoundCue.FallHeels=>0x82,
         SoundCue.Damage=>0xC6, SoundCue.Teleport=>0x47,
+        SoundCue.TeleportDepart=>0xC7, SoundCue.TeleportArrive=>0xC8,
         SoundCue.Spring=>0x44, SoundCue.LiftMove=>0x41,
         SoundCue.Pickup=>0xC5, SoundCue.PickupEquipment=>0xC2, SoundCue.Carry=>0xC4,
         SoundCue.Fire=>0x48,
         // No invented substitute for events whose original call site is unverified.
         _=>-1
     };
+    internal static void Submit(OriginalAudio synth,SoundCue cue)
+    {
+        if(cue==SoundCue.StopStep){synth.StopIfPlaying(0x80);return;}
+        int command=Command(cue);if(command>=0)synth.Trigger(command);
+    }
     void Run()
     {
         IntPtr device=IntPtr.Zero;
@@ -52,8 +59,7 @@ sealed class GameAudio : IDisposable
                     if(buffer.Queued&&(Marshal.PtrToStructure<WaveHeader>(buffer.Header).Flags&1)==0)continue;
                     while(pending.TryDequeue(out var cue))
                     {
-                        if(cue==SoundCue.StopStep){synth.StopIfPlaying(0x80);continue;}
-                        int command=Command(cue);if(command>=0)synth.Trigger(command);
+                        Submit(synth,cue);
                     }
                     for(int i=0;i<Samples;i++) {
                         if(framePhase>=Rate){synth.Frame();framePhase-=Rate;}

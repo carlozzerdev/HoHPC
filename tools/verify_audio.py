@@ -6,7 +6,7 @@ from recover import game_data_image, disk_files
 ROOT=Path(__file__).resolve().parents[1]
 m=game_data_image(disk_files(ROOT/'Head over Heels (Europe).dsk'))
 w=lambda p:int.from_bytes(m[p:p+2],'little')
-commands=[0x80,0x85,0x88,0xc6,0x47,0x44,0x41,0xc5,0xc2,0xc4,0x48]
+commands=[0x80,0x82,0x83,0x84,0x85,0x88,0xc6,0xc7,0xc8,0x47,0x44,0x41,0xc5,0xc2,0xc4,0x48]
 expected={}
 for command in commands:
     regs=bytearray(11);regs[7]=63
@@ -33,4 +33,4 @@ for line in r.stdout.splitlines():
     if ': ' not in line or line.startswith(' '):continue
     command,actual=line.split(': ')
     assert actual==expected[int(command,16)],(command,actual,expected[int(command,16)])
-print('11 independently decoded first-note register vectors match; 11 effects produce PCM and finish in silence.')
+print('16 independently decoded first-note register vectors match; PCM and silence validated (looping movement effects explicitly stopped).')
